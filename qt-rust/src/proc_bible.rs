@@ -2,7 +2,7 @@ use serde::{Serialize, Deserialize};
 use serde_json::Result;
 use std::fs::File;
 use std::io::prelude::*;
-use std::collections::HashMap;
+use std::collections::BTreeMap;
 
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 struct Verse {
@@ -27,7 +27,7 @@ struct Book {
 #[derive(Serialize, Deserialize, Debug, Default, Clone)]
 struct Bible {
     version: String,
-    books: HashMap<String, Book>,
+    books: BTreeMap<String, Book>,
 }
 
 // Download full bible from http://download.ibibles.net/

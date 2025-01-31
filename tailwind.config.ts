@@ -13,6 +13,14 @@ export default {
         foreground: "var(--foreground)",
       },
     },
+    backgroundColor: {
+      'lyw': '#e1e1cc'
+    },
+    fontFamily: {
+      'noto-sans-TC': ['var(--font-noto-sans-TC)'],
+      'noto-serif-TC': ['var(--font-noto-serif-TC)'],
+      'klee-one': ['var(--font-klee-one)'],
+    }
   },
   plugins: [],
 } satisfies Config;

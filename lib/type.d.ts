@@ -8,14 +8,16 @@ export type Chapter = {
   verses: Verse[],
 };
 
+export type Book = {
+  id: string,
+  order: number,
+  name: string,
+  chapters: Chapter[],
+}
+
 export type Bible = {
   version: string,
   books: {
-    [book: string]: {
-      id: string,
-      order: number,
-      name: string,
-      chapters: Chapter[],
-    },
+    [book: string]: Book,
   }
 };

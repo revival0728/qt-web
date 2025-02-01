@@ -3,8 +3,9 @@
 import type { Bible } from '@/lib/type';
 import { useCallback, useEffect, useState } from 'react';
 import defaultBible from '@/bible/CUT/full.json';
-import SelectMenu from './select-menu';
-import VerseLine from '../verse-line';
+import SelectMenu from '../select-menu';
+import BibleViewer from '../bible-viewer';
+import { getBibleView } from '@/lib/utilites';
 
 export default function FullBibleView() {
   const [bible, setBible] = useState<Bible>(defaultBible);
@@ -61,14 +62,10 @@ export default function FullBibleView() {
               }})}  
           />
         </div>
-        <div className='flex w-full justify-center items-center'>
-          <article className='w-[98%] font-noto-serif-TC text-2xl text-gray-800'>
-            {
-              bible.books[bookId].chapters[chapterId].verses.map((ve, idx) => {
-                return <VerseLine key={idx} verse={ve} />
-              })
-            }
-          </article>
+        <div className='flex flex-nowrap w-full justify-center items-center'>
+          <div className='basis-[96%]'>
+            <BibleViewer content={getBibleView(bible, bookId, chapterId)} title={true} />
+          </div>
         </div>
       </div>
     </>

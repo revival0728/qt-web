@@ -21,3 +21,14 @@ export type Bible = {
     [book: string]: Book,
   }
 };
+
+export type BibleView = {
+  version: string,
+  bookId: string,
+  bookName: string,
+  chapterId: number,
+  chapterName: number,
+  verseRange: [number, number],
+  fullChapter: boolean,
+  verses: Verse[],
+};

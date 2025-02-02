@@ -47,6 +47,7 @@ pub fn proc_to_json(version: &str, file_dest: &str, save_dest: &str) -> Result<(
     let mut json_bible = Bible::default();
     let mut cur_order = 0_u32;
     let mut cur_book = Book::default();
+    let mut cur_book_fn: &str = &"";
     let mut cur_chapter= Chapter::default();
 
     json_bible.version = version.to_string();
@@ -56,6 +57,9 @@ pub fn proc_to_json(version: &str, file_dest: &str, save_dest: &str) -> Result<(
         if data[0].contains("=") {
             cur_book = Book::default();
             cur_chapter = Chapter::default();
+            if data.len() >= 2 {
+                cur_book_fn = data[1];
+            }
         } else if data[0] == "END" {
             cur_book.chapters.push(cur_chapter);
             cur_chapter = Chapter::default();
@@ -64,7 +68,7 @@ pub fn proc_to_json(version: &str, file_dest: &str, save_dest: &str) -> Result<(
             cur_order += 1;
         } else {
             cur_book.id = data[0].to_string();
-            cur_book.name = data[2].to_string();
+            cur_book.name = (if data[0] == data[2] { cur_book_fn } else { data[2] }).to_string();
             cur_book.order = cur_order;
             let info: Vec<&str> = data[1].split(':').collect();
             let ch = match info[0].parse::<u32>() { Ok(v) => v, Err(e) => { println!("{e}"); return Ok(()); } };

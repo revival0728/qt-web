@@ -9,15 +9,18 @@ export const metadata: Metadata = {
 
 const notoSansTC = Noto_Sans_TC({
   variable: '--font-noto-sans-TC',
+  subsets: ['latin', 'cyrillic', 'latin-ext'],
 })
 
 const notoSerifTC = Noto_Serif_TC({
   variable: '--font-noto-serif-TC',
+  subsets: ['latin', 'cyrillic', 'latin-ext'],
 });
 
 const kleeOne = Klee_One({
   weight: ["400", "600"],
   variable: '--font-klee-one',
+  subsets: ['latin', 'cyrillic', 'latin-ext'],
 });
 
 

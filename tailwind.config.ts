@@ -14,7 +14,14 @@ export default {
       },
     },
     backgroundColor: {
-      'lyw': '#e1e1cc'
+      'lyw': 'var(--color-lyw)',
+      'dlyw': 'var(--color-dlyw)',
+    },
+    textColor: {
+      'hyw': 'var(--color-hyw)',
+    },
+    fill: {
+      'hyw': 'var(--colo-hyw)',
     },
     fontFamily: {
       'noto-sans-TC': ['var(--font-noto-sans-TC)'],

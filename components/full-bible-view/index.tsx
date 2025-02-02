@@ -2,10 +2,12 @@
 
 import type { Bible } from '@/lib/type';
 import { useCallback, useEffect, useState } from 'react';
-import defaultBible from '@/bible/CUT/full.json';
 import SelectMenu from '../select-menu';
 import BibleViewer from '../bible-viewer';
 import { getBibleView } from '@/lib/utilites';
+
+import defaultBible from '@/bible/CUV/full.json';
+import allVersion from '@/bible/list.json';
 
 export default function FullBibleView() {
   const [bible, setBible] = useState<Bible>(defaultBible);
@@ -13,11 +15,10 @@ export default function FullBibleView() {
   const [chapterId, setChapterId] = useState<number>(0);
   const [bookNames, setBookNames] = useState<{id: string, name: string}[]>([]);
 
-  const allVersion = [{
-    id: 'CUT',
-    name: '中文和合本',
-  }];
-
+  const setLocalPage = (newBookId: string, newChapterId: number) => {
+    localStorage.setItem("bookId", newBookId);
+    localStorage.setItem("chapterId", newChapterId.toString());
+  };
   const sortedBookName = useCallback(() => {
     const bookIds = Object.keys(bible.books);
     bookIds.sort((a, b) => { return bible.books[a].order - bible.books[b].order; });
@@ -26,10 +27,34 @@ export default function FullBibleView() {
       name: bible.books[k].name
     }});
   }, [bible]);
+  const setMenuBookId = useCallback((value: string) => {
+    const bookSelect = document.getElementsByName('bookId')[0];
+    if(bookSelect instanceof HTMLSelectElement) {
+      bookSelect.value = value;
+    }
+  }, []);
+  const setMenuChapterId = useCallback((value: number) => {
+    const chapterSelect = document.getElementsByName('chapterId')[0];
+    if(chapterSelect instanceof HTMLSelectElement) {
+      chapterSelect.value = value.toString();
+    }
+  }, []);
 
   useEffect(() => {
+    const localBookId = localStorage.getItem("bookId");
+    const localChapterId = localStorage.getItem("chapterId");
+    if(localBookId !== null) {
+      setBookId(localBookId);
+      setMenuBookId(localBookId);
+    }
+    if(localChapterId !== null) {
+      setChapterId(parseInt(localChapterId));
+      setMenuChapterId(parseInt(localChapterId));
+    }
+  }, [bookId, chapterId, setBookId, setChapterId, setMenuBookId, setMenuChapterId]);
+  useEffect(() => {
     setBookNames(sortedBookName());
-  }, [bible, sortedBookName, setBookNames])
+  }, [bible, sortedBookName, setBookNames]);
 
   const versionOnChange: React.ChangeEventHandler<HTMLSelectElement> = async (event) => {
     const newVersion = event.target.value;
@@ -40,20 +65,20 @@ export default function FullBibleView() {
   const bookIdOnChange: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
     const newBookId = event.target.value;
     setBookId(newBookId);
-    const chapterSelect = document.getElementsByName('chapterId')[0];
-    if(chapterSelect instanceof HTMLSelectElement)
-      chapterSelect.value = "0";
+    setMenuChapterId(0);
     setChapterId(0);
+    setLocalPage(newBookId, 0);
   };
   const chapterIdOnChange: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
     const newChapterId = event.target.value;
     setChapterId(parseInt(newChapterId));
+    setLocalPage(bookId, parseInt(newChapterId));
   };
 
   return (
     <>
       <div className='h-full w-full bg-lyw'>
-        <div className='sticky top-0 left-0 z-10'>
+        <div className='flex flex-nowrap justify-center sticky top-0 left-0 z-10 h-16 w-full bg-lyw overflow-x-auto gap-3 max-md:gap-0'>
           <SelectMenu name="version" onChange={versionOnChange} options={allVersion} />
           <SelectMenu name="bookId" onChange={bookIdOnChange} options={bookNames} />
           <SelectMenu name="chapterId" onChange={chapterIdOnChange} 

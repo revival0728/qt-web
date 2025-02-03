@@ -1,6 +1,6 @@
 "use client"
 
-import type { Bible } from '@/lib/type';
+import type { Bible, Localize } from '@/lib/type';
 import { useCallback, useEffect, useState } from 'react';
 import SelectMenu from '../select-menu';
 import BibleViewer from '../bible-viewer';
@@ -19,6 +19,7 @@ export default function FullBibleView() {
     localStorage.setItem("bookId", newBookId);
     localStorage.setItem("chapterId", newChapterId.toString());
   };
+  //TODO: pre proc this and save to json file
   const sortedBookName = useCallback(() => {
     const bookIds = Object.keys(bible.books);
     bookIds.sort((a, b) => { return bible.books[a].order - bible.books[b].order; });
@@ -40,6 +41,22 @@ export default function FullBibleView() {
     }
   }, []);
 
+  useEffect(() => {
+    const langId = localStorage.getItem('langId');
+    if(langId !== null) {
+      const getData = async () => {
+        if(langId === 'zh-TC') return;
+        const local: Localize = await import(`@/localize/${langId}.json`);
+        const newVerBible = await import(`@/bible/${local.preferences.version}/full.json`);
+        const versionSelect = document.getElementsByName('version')[0];
+        setBible(newVerBible);
+        if(versionSelect instanceof HTMLSelectElement) {
+          versionSelect.value = local.preferences.version;
+        }
+      };
+      getData();
+    }
+  }, [setBible]);
   useEffect(() => {
     const localBookId = localStorage.getItem("bookId");
     const localChapterId = localStorage.getItem("chapterId");
@@ -78,7 +95,7 @@ export default function FullBibleView() {
   return (
     <>
       <div className='h-full w-full bg-lyw'>
-        <div className='flex flex-nowrap justify-center sticky top-0 left-0 z-10 h-16 w-full bg-lyw overflow-x-auto gap-3 max-md:gap-0'>
+        <div className='flex flex-nowrap justify-center sticky top-0 left-0 z-10 h-16 w-full bg-lyw overflow-x-auto gap-3 max-md:gap-0 max-md:divide-x-2'>
           <SelectMenu name="version" onChange={versionOnChange} options={allVersion} />
           <SelectMenu name="bookId" onChange={bookIdOnChange} options={bookNames} />
           <SelectMenu name="chapterId" onChange={chapterIdOnChange} 

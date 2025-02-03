@@ -1,4 +1,4 @@
-import type { Bible, BibleView, Verse } from "./type"; 
+import type { Bible, BibleView, Verse, Book } from "./type"; 
 
 function getBibleView(bible: Bible, bookId: string, chapterId: number, verseRange?: [number, number]): BibleView {
   const fullVerse = bible.books[bookId].chapters[chapterId].verses;
@@ -19,4 +19,25 @@ function getBibleView(bible: Bible, bookId: string, chapterId: number, verseRang
   }
 }
 
-export { getBibleView };
+function createBibleByBooks(version: string, argBooks: Book[]): Bible {
+  const books: { [book: string]: Book } = {};
+  for(let i = 0; i < argBooks.length; ++i) {
+    books[argBooks[i].id] = argBooks[i];
+  }
+
+  return {
+    version,
+    books,
+  }
+}
+
+async function getRequireBooks(version: string, requireBookList: string[]): Promise<Book[]> {
+  const res: Promise<Book>[] = requireBookList.map(async (bookId) => {
+    const book: Book = await import(`@/bible/${version}/${bookId}.json`);
+    return book;
+  });
+
+  return await Promise.all(res);
+}
+
+export { getBibleView, createBibleByBooks, getRequireBooks };

@@ -32,3 +32,18 @@ export type BibleView = {
   fullChapter: boolean,
   verses: Verse[],
 };
+
+export type Localize = {
+  preferences: {
+    version: string,
+  },
+  catpions: {
+    dailyProverbs: string,
+  },
+};
+
+export type LanguageInfo = {
+  id: string,
+  name: string,
+  preferVer: string,
+};

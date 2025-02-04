@@ -5,7 +5,7 @@ import InfoCard from '@/components/info-card';
 export default function Page() {
   return (
     <>
-      <div className="flex flex-col gap-40 items-center justify-center absolute h-auto w-full top-0 left-0 pt-2 pb-4">
+      <div className="flex flex-col gap-40 items-center justify-between absolute h-auto min-h-full w-full top-0 left-0 pt-2 pb-4">
         <div className="block h-full w-[80%]">
           <FullBibleView />
         </div>

@@ -4,7 +4,7 @@ import "./globals.css";
 
 export const metadata: Metadata = {
   title: "Quiet Time",
-  description: "Keep a daily quiet time with God!",
+  description: "每天與神親近一段時間！ Keep a daily quiet time with God!",
 };
 
 const notoSansTC = Noto_Sans_TC({
@@ -30,7 +30,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html>
+    <html lang="zh-TW">
       <body
         className={`${notoSansTC.variable} ${notoSerifTC.variable} ${kleeOne.variable} antialiased`}
       >

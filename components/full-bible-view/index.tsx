@@ -44,6 +44,7 @@ export default function FullBibleView() {
   useEffect(() => {
     const langId = localStorage.getItem('langId');
     if(langId !== null) {
+      document.documentElement.lang = langId;
       const getData = async () => {
         if(langId === 'zh-TC') return;
         const local: Localize = await import(`@/localize/${langId}.json`);

@@ -15,7 +15,7 @@ export default function BibleViewer({ content, title, version }: PropType) {
     <article className='font-noto-serif-TC text-2xl text-gray-800 leading-loose'>
       {
         title ? (
-          <h1 className='font-semibold'>{`${content.bookName} ${content.chapterName}`}{content.fullChapter ? "" : `:${content.verseRange[0]}-${content.verseRange[1]}`}{version ? <span className="ml-2">{content.version}</span> : <></>}</h1>
+          <h2 className='font-semibold'>{`${content.bookName} ${content.chapterName}`}{content.fullChapter ? "" : `:${content.verseRange[0]}-${content.verseRange[1]}`}{version ? <span className="ml-2">{content.version}</span> : <></>}</h2>
         ) :
           <></>
       }

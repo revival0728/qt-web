@@ -39,6 +39,9 @@ export type Localize = {
   },
   catpions: {
     dailyProverbs: string,
+    prepareTitle: string,
+    endingCaption: string,
+    bibleLinkCaption: string,
   },
 };
 

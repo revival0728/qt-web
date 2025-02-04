@@ -15,7 +15,7 @@ export default function DailyProv({ bible, local }: PropType) {
 
   return (
     <article>
-      <h1 className="text-3xl font-semibold mb-6">{local.catpions.dailyProverbs}</h1>
+      <h2>{local.catpions.dailyProverbs}</h2>
       <BibleViewer content={getBibleView(bible, "Prv", todayChapterId)} title={true} version={true} />
     </article>
   );

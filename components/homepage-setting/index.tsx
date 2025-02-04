@@ -25,6 +25,7 @@ export default function HomepageSetting({ requireBookList, setBible, setLocal }:
     if(bibleVerSelect instanceof HTMLSelectElement) {
       bibleVerSelect.value = preferVer;
     }
+    document.documentElement.lang = newLangId;
   };
   const bibleVerOnChange: React.ChangeEventHandler<HTMLSelectElement> = async (event) => {
     const newBibleVer = event.target.value;

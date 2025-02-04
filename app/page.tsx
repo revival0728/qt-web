@@ -6,10 +6,11 @@ import ContentCard from "@/components/content-card";
 import DailyProv from "@/components/daily-prov";
 import { createBibleByBooks } from "@/lib/utilites";
 
-import defaultLang from "@/localize/zh-TC.json";
+import defaultLang from "@/localize/zh-TW.json";
 import defaultProv from "@/bible/CUV/Prv.json";
 import HomepageSetting from "@/components/homepage-setting";
 import InfoCard from "@/components/info-card";
+import Link from "next/link";
 
 export default function Home() {
   const requireBookList = ["Prv"];
@@ -23,7 +24,18 @@ export default function Home() {
           <HomepageSetting requireBookList={requireBookList} setBible={setBible} setLocal={setLocal} />
         </ContentCard>
         <ContentCard>
+          <h2>{local.catpions.prepareTitle}</h2>
+        </ContentCard>
+        <ContentCard>
           <DailyProv bible={bible} local={local} />
+        </ContentCard>
+        <ContentCard>
+          <p>
+            {local.catpions.endingCaption}
+            <Link className="ml-2 underline" target="_blank" href="/bible">
+              {local.catpions.bibleLinkCaption}
+            </Link>
+          </p>
         </ContentCard>
       </div>
       <div className="w-[80%]">

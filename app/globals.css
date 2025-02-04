@@ -8,6 +8,8 @@
   --color-lyw: #e1e1cc;
   --color-dlyw: #d9d9bf;
   --color-hyw: #80804d;
+  --icon-text: #fdfde0;
+  --icon-bg: #686840;
 }
 
 @media (prefers-color-scheme: dark) {

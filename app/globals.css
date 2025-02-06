@@ -27,4 +27,7 @@ body {
   .content-card h2 {
     @apply text-3xl font-semibold mb-6;
   }
+  .dev-tools .dev-section h2 {
+    @apply text-3xl
+  }
 }

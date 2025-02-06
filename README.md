@@ -68,7 +68,7 @@ type Bible = {
 
 `/qt-rust`的`proc_bible::proc_to_json()`可以將[這個網站](http://download.ibibles.net/)的聖經譯本轉換成所需的格式
 
-未來會提供以上兩個函數的網頁版本
+[這個網頁](https://qt.hsingfu.tw/dev)提供以上兩個函數的網路版本
 
 新增完檔案和資料夾後須在`/bible/list.json`新增該譯本
 

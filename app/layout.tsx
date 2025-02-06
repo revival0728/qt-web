@@ -5,6 +5,19 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: "Quiet Time",
   description: "每天與神親近一段時間！ Keep a daily quiet time with God!",
+  openGraph: {
+    type: "website",
+    title: 'Quite Time',
+    description: '每天與神親近一段時間！ Keep a daily quiet time with God!',
+    url: "",
+    images: ['/logo-image?height=630&width=1200'],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: 'Quite Time',
+    description: '每天與神親近一段時間！ Keep a daily quiet time with God!',
+    images: ['/logo-image?height=630&width=1200'],
+  }
 };
 
 const notoSansTC = Noto_Sans_TC({

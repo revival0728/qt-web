@@ -1,4 +1,4 @@
-import { text_proc_to_json, json_slice_by_book } from "@/qt-rust/pkg/qt_rust";
+import { text_proc_to_json, json_slice_by_book } from "qt-rust";
 import JSZip from "jszip";
 
 const textProcToJson = async (version: string, file: File) => {

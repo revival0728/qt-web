@@ -4,9 +4,6 @@ import { join } from "node:path";
 import QTBigImage from "@/lib/qt-big-image";
 import { NextRequest } from "next/server";
 
-export const alt = 'QTBigImage';
-export const contentType = 'image/png';
-
 export async function GET(req: NextRequest) {
   const url = new URL(req.url)
   const hs = url.searchParams.get("height");

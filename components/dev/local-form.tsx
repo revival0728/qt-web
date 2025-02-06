@@ -1,6 +1,7 @@
 "use client"
 
 type PropType = {
+  formName: string,
   reqDatas: {
     inputName: string,
     inputType: React.HTMLInputTypeAttribute,
@@ -10,20 +11,19 @@ type PropType = {
   action: (formData: FormData) => void,
 }
 
-export default function LocalForm({ reqDatas, buttonCatpion, action }: PropType) {
+export default function LocalForm({ formName, reqDatas, buttonCatpion, action }: PropType) {
   const getFormId = () => {
-    if(window === undefined) return;
-    const props = JSON.stringify(reqDatas) + buttonCatpion + action.toString();
+    const props = formName;
     const MOD = 1e9 + 7;
     const len = props.length;
-    let hash1 = 0, hash2 = 0;
+    let base = 1;
+    let hash1 = 0;
     for(let i = 0; i < len; ++i) {
-      hash1 += (1 << i) * props.charCodeAt(i) % MOD;
-      hash2 += (1 << (len - i - 1)) * props.charCodeAt(i) % MOD;
+      hash1 += base * props.charCodeAt(i) % MOD;
+      base = (base << 1) % MOD;
       hash1 %= MOD;
-      hash2 %= MOD;
     }
-    return (hash1 ^ hash2).toString();
+    return hash1.toString();
   }
   const formId = getFormId();
   const onClick = () => {

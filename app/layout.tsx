@@ -3,6 +3,7 @@ import { Noto_Sans_TC, Noto_Serif_TC, Klee_One } from "next/font/google";
 import "./globals.css";
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://qt.hsingfu.tw'),
   title: "Quiet Time",
   description: "每天與神親近一段時間！ Keep a daily quiet time with God!",
   openGraph: {

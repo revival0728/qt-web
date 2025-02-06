@@ -20,7 +20,7 @@ use type_def::QTRustError;
 
 impl Into<JsValue> for QTRustError {
   fn into(self) -> JsValue {
-      JsValue::from_str(&format!("{self}"))
+    JsValue::undefined()
   }
 }
 

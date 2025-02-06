@@ -3,6 +3,7 @@ name = "qt-rust"
 version = "0.1.0"
 edition = "2021"
 authors = ["revival0728"]
+license = "MIT"
 
 [dependencies]
 serde_json = { version = "1.0.138", default-features = false, features = [ "alloc"] }

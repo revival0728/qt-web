@@ -10,8 +10,8 @@ fn main() -> Result<()> {
   //   "/home/revival0728/Downloads/kjv/books.txt", 
   //   "./full-json-bible/KJV-version.json"
   // )
-  slice_bible::slice_by_book(
-    "/home/revival0728/Documents/repo/qt-web/bible/KJV/full.json", 
-    "/home/revival0728/Documents/repo/qt-web/bible/KJV/"
-  )
+  // slice_bible::slice_by_book(
+  //   "/home/revival0728/Documents/repo/qt-web/bible/KJV/full.json", 
+  //   "/home/revival0728/Documents/repo/qt-web/bible/KJV/"
+  // )
 }

@@ -12,22 +12,22 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      backgroundColor: {
+        'lyw': 'var(--color-lyw)',
+        'dlyw': 'var(--color-dlyw)',
+      },
+      textColor: {
+        'hyw': 'var(--color-hyw)',
+      },
+      fill: {
+        'hyw': 'var(--colo-hyw)',
+      },
+      fontFamily: {
+        'noto-sans-TC': ['var(--font-noto-sans-TC)'],
+        'noto-serif-TC': ['var(--font-noto-serif-TC)'],
+        'klee-one': ['var(--font-klee-one)'],
+      }
     },
-    backgroundColor: {
-      'lyw': 'var(--color-lyw)',
-      'dlyw': 'var(--color-dlyw)',
-    },
-    textColor: {
-      'hyw': 'var(--color-hyw)',
-    },
-    fill: {
-      'hyw': 'var(--colo-hyw)',
-    },
-    fontFamily: {
-      'noto-sans-TC': ['var(--font-noto-sans-TC)'],
-      'noto-serif-TC': ['var(--font-noto-serif-TC)'],
-      'klee-one': ['var(--font-klee-one)'],
-    }
   },
   plugins: [],
 } satisfies Config;

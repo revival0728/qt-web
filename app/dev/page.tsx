@@ -4,51 +4,17 @@ import { saveAs } from "file-saver";
 import DevToolSection from "@/components/dev/tool-section";
 import LocalForm from "@/components/dev/local-form";
 import { useEffect, useState } from "react";
-import JSZip from "jszip";
+import { textProcToJson, jsonSliceByBook } from "@/lib/rust-api-wrapper";
 
 export default function Dev() {
-  const [textProcToJson, setTextProcToJson] = useState<((version: string, file: File) => Promise<File | null | undefined>) | null>(null);
-  const [jsonSliceByBook, setJsonSliceByBook] = useState<((file: File, fullJson: boolean) => Promise<Blob | null | undefined>) | null>(null);
+  const [qtRust, setQtRust] = useState<typeof import('qt-rust') | null>(null);
 
   useEffect(() => {
     (async () => {
-      const { text_proc_to_json, json_slice_by_book } = await import('qt-rust');
-
-      const func1 = async (version: string, file: File) => {
-        if(file === undefined || file === null) return;
-        if(file.type !== 'text/plain') return null;
-        const text = await file.text();
-        const json = text_proc_to_json(version, text);
-        const res = new File([json], 'full.json', {
-          type: "application/json",
-        });
-        return res;
-      };
-
-      const func2 = async (file: File, fullJson?: boolean) => {
-        if(file === undefined || file === null) return;
-        if(file.type !== 'application/json') return null;
-        const json = await file.text();
-        const data = json_slice_by_book(json);
-        const zip = new JSZip();
-        if(fullJson !== undefined) {
-          if(fullJson)
-            zip.file('full.json', file);
-        }
-        for(let i = 0; i < data.length; i += 2) {
-          const bookId = data[i];
-          const content = data[i + 1];
-          zip.file(`${bookId}.json`, content);
-        }
-        const blobData = await zip.generateAsync({ type: 'blob' });
-        const res = new Blob([blobData]);
-        return res;
-      };
-
-      setTextProcToJson(func1);
-      setJsonSliceByBook(func2);
+      const wasmModule = await import('qt-rust');
+      setQtRust(wasmModule);
     })();
-  }, [setTextProcToJson, setJsonSliceByBook]);
+  }, [setQtRust]);
 
   const saveTextToFull = async (formData: FormData) => {
     const txt = formData.get("txt");
@@ -61,16 +27,12 @@ export default function Dev() {
       alert("Please input Bible version");
       return;
     }
-    if(textProcToJson === null || jsonSliceByBook === null) {
-      alert('Wait for fetching web function');
-      return;
-    }
-    const resJson = await textProcToJson(version, txt);
+    const resJson = await textProcToJson(qtRust, version, txt);
     if(resJson === null || resJson === undefined) {
       alert("File format error.");
       return;
     }
-    const zipFolder = await jsonSliceByBook(resJson, true);
+    const zipFolder = await jsonSliceByBook(qtRust, resJson, true);
     if(zipFolder === null || zipFolder === undefined) {
       alert("File format error.");
       return;
@@ -88,7 +50,7 @@ export default function Dev() {
       alert('Wait for fetching web function');
       return;
     }
-    const zipFolder = await jsonSliceByBook(json, true);
+    const zipFolder = await jsonSliceByBook(qtRust, json, true);
     if(zipFolder === null || zipFolder === undefined) {
       alert("File format error.");
       return;

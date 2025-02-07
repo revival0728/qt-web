@@ -1,21 +1,23 @@
 import JSZip from "jszip";
 
-const { text_proc_to_json, json_slice_by_book } = await import('qt-rust');
+type QTRust = typeof import('qt-rust');
 
-const textProcToJson = async (version: string, file: File) => {
+const textProcToJson = async (wasm: QTRust | null, version: string, file: File) => {
   if(file.type !== 'text/plain') return null;
   const text = await file.text();
-  const json = text_proc_to_json(version, text);
+  if(wasm === null) return null;
+  const json = wasm.text_proc_to_json(version, text);
   const res = new File([json], 'full.json', {
     type: "application/json",
   });
   return res;
 };
 
-const jsonSliceByBook = async (file: File, fullJson?: boolean) => {
+const jsonSliceByBook = async (wasm: QTRust | null, file: File, fullJson?: boolean) => {
   if(file.type !== 'application/json') return null;
   const json = await file.text();
-  const data = json_slice_by_book(json);
+  if(wasm === null) return null;
+  const data = wasm.json_slice_by_book(json);
   const zip = new JSZip();
   if(fullJson !== undefined) {
     if(fullJson)

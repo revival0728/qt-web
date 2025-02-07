@@ -1,4 +1,4 @@
-import type { Bible, BibleView, Verse, Book } from "./type"; 
+import type { Bible, BibleView, Verse, Book, BibleRange } from "./type"; 
 
 function getBibleView(bible: Bible, bookId: string, chapterId: number, verseRange?: [number, number]): BibleView {
   const fullVerse = bible.books[bookId].chapters[chapterId].verses;
@@ -40,4 +40,53 @@ async function getRequireBooks(version: string, requireBookList: string[]): Prom
   return await Promise.all(res);
 }
 
-export { getBibleView, createBibleByBooks, getRequireBooks };
+function getDayId(beginDateString: string): number {
+  const beginDate = new Date(beginDateString);
+  return Math.floor((Date.now() - beginDate.valueOf()) / (1000 * 60 * 60 * 24));
+}
+
+function parseBibleRange(raw: string): BibleRange {
+  const splitBR = raw.split('=');
+  const bookId = splitBR[0];
+  const splitBE = splitBR[1].split('-');
+  const parseCV = (raw: string) => {
+    const split = raw.split(':');
+    const res: number[] = [];
+    for(let i = 0; i < split.length; ++i)
+      res.push(parseInt(split[i]));
+    return res;
+  }
+  const cv = parseCV(splitBE[0]);
+  const chapterId = cv[0];
+  if(splitBE.length === 1) {
+    if(cv.length === 1) {
+      return {
+        bookId,
+        chapterId,
+      };
+    }
+    const verseRange: [number, number] = [cv[1], cv[1]];
+    return {
+      bookId,
+      chapterId,
+      verseRange,
+    };
+  }
+  const begin = parseCV(splitBE[0]);
+  const end = parseCV(splitBE[1]);
+  const verseRange: [number, number] = [begin[1], end[1]];
+  return {
+    bookId,
+    chapterId,
+    verseRange,
+  };
+}
+
+function checkBibleMatchRequirement(requireBookList: string[], bible: Bible): boolean {
+  const exist = Object.keys(bible.books).sort();
+  const req = requireBookList.toSorted();
+  if(exist.length !== req.length) return false;
+  return exist.every((value, idx) => value === req[idx]);
+}
+
+export { getBibleView, createBibleByBooks, getRequireBooks, getDayId, parseBibleRange, checkBibleMatchRequirement };

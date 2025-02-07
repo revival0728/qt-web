@@ -1,0 +1,28 @@
+{
+  "duration": 1,
+  "beginDate": "2/7/2025",
+  "bibleProgress": [["Ge=1:1-1:10"]],
+  "requireBookList": [["Ge"]],
+  "langId": "zh-TW",
+  "requireData": [{
+    "titles": ["預備自己的心。"],
+    "captions": ["做一個結束禱告。"]
+  }],
+  "dailyContent": [
+    {
+      "titleId": 0
+    },
+    {
+      "bibleProgressId": 0
+    },
+    {
+      "captionId": 0
+    }
+  ],
+  "localizeData": {
+    "en": {
+      "titles": [["Prepare yourself"]],
+      "captions": [["Do an ending prayer"]]
+    }
+  }
+}

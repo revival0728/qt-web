@@ -33,6 +33,12 @@ export type BibleView = {
   verses: Verse[],
 };
 
+export type BibleRange = {
+  bookId: string,
+  chapterId: number,
+  verseRange?: [number, number],
+};
+
 export type Localize = {
   preferences: {
     version: string,
@@ -49,4 +55,34 @@ export type LanguageInfo = {
   id: string,
   name: string,
   preferVer: string,
+};
+
+export type CustomPlan = {
+  duration: number,
+  langId: string,
+  beginDate: string,
+  loop?: boolean,
+  bibleProgress: string[][],
+  requireBookList: string[][],
+  requireData: {
+    titles?: string[],
+    captions?: string[],
+    externalLinks?: string[],
+    youtubeVideos?: string[],
+  }[],
+  dailyContent: {
+    titleId?: number,
+    captionId?: number,
+    youtubeVideoId?: number,
+    externalLinkId?: number,
+    bibleProgressId?: number,
+  }[],
+  localizeData?: {
+    [langId: string]: {
+      titles?: string[],
+      captions?: string[],
+      externalLinks?: string[],
+      youtubeVideos?: string[],
+    }[],
+  },
 };

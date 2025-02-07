@@ -1,5 +1,5 @@
 import type { Bible, Localize } from "@/lib/type"
-import type { Dispatch, SetStateAction } from "react"
+import { type Dispatch, type SetStateAction } from "react"
 import SelectMenu from "../select-menu"
 
 import allVersion from "@/bible/list.json";
@@ -10,9 +10,10 @@ type PropType = Readonly<{
   requireBookList: string[],
   setBible: Dispatch<SetStateAction<Bible>>,
   setLocal: Dispatch<SetStateAction<Localize>>,
+  setVersion: Dispatch<SetStateAction<string>>,
 }>;
 
-export default function HomepageSetting({ requireBookList, setBible, setLocal }: PropType) {
+export default function HomepageSetting({ requireBookList, setBible, setLocal, setVersion }: PropType) {
   const langIdOnChange: React.ChangeEventHandler<HTMLSelectElement> = async (event) => {
     const newLangId = event.target.value;
     const local: Localize = await import(`@/localize/${newLangId}.json`);
@@ -20,6 +21,7 @@ export default function HomepageSetting({ requireBookList, setBible, setLocal }:
     const newVerBible = createBibleByBooks(preferVer, await getRequireBooks(preferVer, requireBookList));
     setLocal(local);
     setBible(newVerBible);
+    setVersion(preferVer);
     localStorage.setItem('langId', newLangId);
     const bibleVerSelect = document.getElementsByName('bibleVer')[0];
     if(bibleVerSelect instanceof HTMLSelectElement) {
@@ -31,6 +33,7 @@ export default function HomepageSetting({ requireBookList, setBible, setLocal }:
     const newBibleVer = event.target.value;
     const newVerBible = createBibleByBooks(newBibleVer, await getRequireBooks(newBibleVer, requireBookList));
     setBible(newVerBible);
+    setVersion(newBibleVer);
   }
 
   return (

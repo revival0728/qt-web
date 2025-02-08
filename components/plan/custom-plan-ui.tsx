@@ -8,6 +8,7 @@ type PropType = {
   bible: Bible,
 };
 
+//TODO: externalLink and youtubeVideo support.
 export default function CustomPlanUI({ plan, bible }: PropType) {
   return (
     plan.dailyContent.map((content, idx) => {

@@ -1,16 +1,16 @@
 "use client"
 
-import { CustomPlan, type Bible, type Localize } from "@/lib/type";
+import defaultLang from "@/localize/zh-TW.json";
+import defaultProv from "@/bible/CUV/Prv.json";
+
+import type { CustomPlan, Bible, Localize } from "@/lib/type";
 import { useEffect, useState } from "react";
 import ContentCard from "@/components/content-card";
 import { checkBibleMatchRequirement, createBibleByBooks, getDayId } from "@/lib/utilites";
 import HomepageSetting from "@/components/homepage-setting";
 import InfoCard from "@/components/info-card";
-
-import defaultLang from "@/localize/zh-TW.json";
-import defaultProv from "@/bible/CUV/Prv.json";
-import DefaultPlan from "@/components/plan/default-plan";
 import CustomPlanUI from "@/components/plan/custom-plan-ui";
+import DefaultPlan from "@/components/plan/default-plan";
 
 export default function Home() {
   const [requireBookList, setRequireBookList] = useState<string[]>(["Prv"]);

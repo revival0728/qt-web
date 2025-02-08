@@ -48,6 +48,7 @@ export type Localize = {
     prepareTitle: string,
     endingCaption: string,
     bibleLinkCaption: string,
+    waitForDownload: string,
   },
 };
 

@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 mod type_def;
 mod proc_bible;
 mod slice_bible;

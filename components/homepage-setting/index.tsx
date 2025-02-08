@@ -1,5 +1,5 @@
 import type { Bible, Localize } from "@/lib/type"
-import { type Dispatch, type SetStateAction } from "react"
+import { useEffect, type Dispatch, type SetStateAction } from "react"
 import SelectMenu from "../select-menu"
 
 import allVersion from "@/bible/list.json";
@@ -8,26 +8,37 @@ import { createBibleByBooks, getRequireBooks } from "@/lib/utilites";
 
 type PropType = Readonly<{
   requireBookList: string[],
+  langId: string,
   setBible: Dispatch<SetStateAction<Bible>>,
   setLocal: Dispatch<SetStateAction<Localize>>,
   setVersion: Dispatch<SetStateAction<string>>,
+  setLangId: Dispatch<SetStateAction<string>>,
 }>;
 
-export default function HomepageSetting({ requireBookList, setBible, setLocal, setVersion }: PropType) {
+export default function HomepageSetting({ requireBookList, langId, setBible, setLocal, setVersion, setLangId }: PropType) {
+  useEffect(() => {
+    (async () => {
+      const local: Localize = await import(`@/localize/${langId}.json`);
+      const preferVer = local.preferences.version;
+      const newVerBible = createBibleByBooks(preferVer, await getRequireBooks(preferVer, requireBookList));
+      setLocal(local);
+      setBible(newVerBible);
+      setVersion(preferVer);
+      localStorage.setItem('langId', langId);
+      const langIdSelect = document.getElementsByName('langId')[0];
+      if(langIdSelect instanceof HTMLSelectElement) {
+        langIdSelect.value = langId;
+      }
+      const bibleVerSelect = document.getElementsByName('bibleVer')[0];
+      if(bibleVerSelect instanceof HTMLSelectElement) {
+        bibleVerSelect.value = preferVer;
+      }
+      document.documentElement.lang = langId;
+    })();
+  }, [langId, requireBookList, setBible, setVersion, setLocal]);
   const langIdOnChange: React.ChangeEventHandler<HTMLSelectElement> = async (event) => {
     const newLangId = event.target.value;
-    const local: Localize = await import(`@/localize/${newLangId}.json`);
-    const preferVer = local.preferences.version;
-    const newVerBible = createBibleByBooks(preferVer, await getRequireBooks(preferVer, requireBookList));
-    setLocal(local);
-    setBible(newVerBible);
-    setVersion(preferVer);
-    localStorage.setItem('langId', newLangId);
-    const bibleVerSelect = document.getElementsByName('bibleVer')[0];
-    if(bibleVerSelect instanceof HTMLSelectElement) {
-      bibleVerSelect.value = preferVer;
-    }
-    document.documentElement.lang = newLangId;
+    setLangId(newLangId);
   };
   const bibleVerOnChange: React.ChangeEventHandler<HTMLSelectElement> = async (event) => {
     const newBibleVer = event.target.value;

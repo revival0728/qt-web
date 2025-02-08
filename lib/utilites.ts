@@ -1,6 +1,6 @@
 import type { Bible, BibleView, Verse, Book, BibleRange } from "./type"; 
 
-function getBibleView(bible: Bible, bookId: string, chapterId: number, verseRange?: [number, number]): BibleView {
+export function getBibleView(bible: Bible, bookId: string, chapterId: number, verseRange?: [number, number]): BibleView {
   const fullVerse = bible.books[bookId].chapters[chapterId].verses;
   const fullChapter = verseRange === undefined;
   if(verseRange === undefined)
@@ -19,7 +19,7 @@ function getBibleView(bible: Bible, bookId: string, chapterId: number, verseRang
   }
 }
 
-function createBibleByBooks(version: string, argBooks: Book[]): Bible {
+export function createBibleByBooks(version: string, argBooks: Book[]): Bible {
   const books: { [book: string]: Book } = {};
   for(let i = 0; i < argBooks.length; ++i) {
     books[argBooks[i].id] = argBooks[i];
@@ -31,7 +31,7 @@ function createBibleByBooks(version: string, argBooks: Book[]): Bible {
   }
 }
 
-async function getRequireBooks(version: string, requireBookList: string[]): Promise<Book[]> {
+export async function getRequireBooks(version: string, requireBookList: string[]): Promise<Book[]> {
   const res: Promise<Book>[] = requireBookList.map(async (bookId) => {
     const book: Book = await import(`@/bible/${version}/${bookId}.json`);
     return book;
@@ -40,12 +40,12 @@ async function getRequireBooks(version: string, requireBookList: string[]): Prom
   return await Promise.all(res);
 }
 
-function getDayId(beginDateString: string): number {
+export function getDayId(beginDateString: string): number {
   const beginDate = new Date(beginDateString);
   return Math.floor((Date.now() - beginDate.valueOf()) / (1000 * 60 * 60 * 24));
 }
 
-function parseBibleRange(raw: string): BibleRange {
+export function parseBibleRange(raw: string): BibleRange {
   const splitBR = raw.split('=');
   const bookId = splitBR[0];
   const splitBE = splitBR[1].split('-');
@@ -82,11 +82,9 @@ function parseBibleRange(raw: string): BibleRange {
   };
 }
 
-function checkBibleMatchRequirement(requireBookList: string[], bible: Bible): boolean {
+export function checkBibleMatchRequirement(requireBookList: string[], bible: Bible): boolean {
   const exist = Object.keys(bible.books).sort();
   const req = requireBookList.toSorted();
   if(exist.length !== req.length) return false;
   return exist.every((value, idx) => value === req[idx]);
 }
-
-export { getBibleView, createBibleByBooks, getRequireBooks, getDayId, parseBibleRange, checkBibleMatchRequirement };

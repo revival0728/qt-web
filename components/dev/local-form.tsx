@@ -12,20 +12,21 @@ type PropType = {
 }
 
 export default function LocalForm({ formName, reqDatas, buttonCatpion, action }: PropType) {
-  const getFormId = () => {
-    const props = formName;
+  const getFormId = (props) => {
     const MOD1 = 1e9 + 7, MOD2 = 987654361;
     const len = props.length;
-    let base = 1, hash1 = 0, hash2 = 0;
+    let base1 = 1, base2 = 2, hash1 = 0, hash2 = 0;
     for(let i = 0; i < len; ++i) {
-      hash1 += base * props.charCodeAt(i) % MOD1;
-      hash2 += base * props.charCodeAt(i) % MOD2;
-      base = (base << 1) % MOD1;
+      hash1 += base1 * props.charCodeAt(i) % MOD1;
+      hash2 += base2 * props.charCodeAt(i) % MOD2;
+      base1 = (base1 << 1) % MOD1;
+	    base2 = (base2 << 2) % MOD2;
       hash1 %= MOD1;
       hash2 %= MOD2;
     }
     return (hash1 ^ hash2).toString();
   }
+  
   const formId = getFormId();
   const onClick = () => {
     if(formId === undefined) return;

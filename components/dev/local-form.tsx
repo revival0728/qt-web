@@ -2,7 +2,7 @@
 
 type PropType = {
   formName: string,
-  reqDatas: {
+  reqData: {
     inputName: string,
     inputType: React.HTMLInputTypeAttribute,
     inputCaption: string,
@@ -11,8 +11,9 @@ type PropType = {
   action: (formData: FormData) => void,
 }
 
-export default function LocalForm({ formName, reqDatas, buttonCatpion, action }: PropType) {
-  const getFormId = (props) => {
+export default function LocalForm({ formName, reqData, buttonCatpion, action }: PropType) {
+  const getFormId = () => {
+    const props = formName;
     const MOD1 = 1e9 + 7, MOD2 = 987654361;
     const len = props.length;
     let base1 = 1, base2 = 2, hash1 = 0, hash2 = 0;
@@ -33,8 +34,8 @@ export default function LocalForm({ formName, reqDatas, buttonCatpion, action }:
     const form = document.getElementById(`${formId}-localForm`);
     if(!(form instanceof HTMLDivElement)) return;
     const formData = new FormData();
-    for(let i = 0; i < reqDatas.length; ++i) {
-      const inputName = reqDatas[i].inputName;
+    for(let i = 0; i < reqData.length; ++i) {
+      const inputName = reqData[i].inputName;
       const input = form.getElementsByClassName(`${formId}-${inputName}`)[0];
       if(input instanceof HTMLInputElement) {
         if(input.files !== null)
@@ -49,7 +50,7 @@ export default function LocalForm({ formName, reqDatas, buttonCatpion, action }:
   return (
     <div id={`${formId}-localForm`}>
       {
-        reqDatas.map(({ inputType, inputName, inputCaption }, idx) => {
+        reqData.map(({ inputType, inputName, inputCaption }, idx) => {
           return (
             <div className="my-1" key={idx}>
               <span className="mr-1">{inputCaption}</span>

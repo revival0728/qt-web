@@ -11,6 +11,7 @@ import HomepageSetting from "@/components/homepage-setting";
 import InfoCard from "@/components/info-card";
 import CustomPlanUI from "@/components/plan/custom-plan-ui";
 import DefaultPlan from "@/components/plan/default-plan";
+import TextEditor from "@/components/text-editor";
 
 export default function Home() {
   const [requireBookList, setRequireBookList] = useState<string[]>(["Prv"]);
@@ -87,6 +88,9 @@ export default function Home() {
               </ContentCard>
           )
         }
+        <ContentCard>
+          <TextEditor />
+        </ContentCard>
       </div>
       <div className="w-[80%]">
         <InfoCard />

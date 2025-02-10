@@ -58,6 +58,19 @@ export type LanguageInfo = {
   preferVer: string,
 };
 
+export namespace Plan {
+  type ExternalLink = {
+    caption: string,
+    url: string,
+  };
+  type RequireData = {
+    titles?: string[],
+    captions?: string[],
+    externalLinks?: ExternalLink[],
+    youtubeVideos?: string[],
+  };
+}
+
 export type CustomPlan = {
   duration: number,
   langId: string,
@@ -65,25 +78,15 @@ export type CustomPlan = {
   loop?: boolean,
   bibleProgress: string[][],
   requireBookList: string[][],
-  requireData: {
-    titles?: string[],
-    captions?: string[],
-    externalLinks?: string[],
-    youtubeVideos?: string[],
-  }[],
+  requireData: Plan.RequireData[],
   dailyContent: {
     titleId?: number,
     captionId?: number,
     youtubeVideoId?: number,
-    externalLinkId?: number,
+    externalLinkIds?: number[],
     bibleProgressId?: number,
   }[],
   localizeData?: {
-    [langId: string]: {
-      titles?: string[],
-      captions?: string[],
-      externalLinks?: string[],
-      youtubeVideos?: string[],
-    }[],
+    [langId: string]: Plan.RequireData[],
   },
 };

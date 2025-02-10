@@ -63,7 +63,7 @@ export default function Dev() {
       <h1 className="text-5xl mb-10">Development & Contribution</h1>
       <DevToolSection>
         <h2>From text file to full data</h2>
-        <LocalForm reqDatas={[
+        <LocalForm reqData={[
           {
             inputName: "version",
             inputType: "text",
@@ -80,7 +80,7 @@ export default function Dev() {
       </DevToolSection>
       <DevToolSection>
         <h2>From full json to full data</h2>
-        <LocalForm reqDatas={[
+        <LocalForm reqData={[
           {
             inputName: "json",
             inputType: "file",

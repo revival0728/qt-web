@@ -1,4 +1,4 @@
-import { EditorConfig } from '@editorjs/editorjs';
+import type { EditorConfig } from '@editorjs/editorjs';
 
 export default async function getEditorjsConfig() {
   const List = (await import('@editorjs/list')).default;
@@ -16,6 +16,10 @@ export default async function getEditorjsConfig() {
       },
       header: {
         class: Header,
+        config: {
+          levels: [1, 2, 3],
+          defaultLevel: 2,
+        }
       },
     },
   };

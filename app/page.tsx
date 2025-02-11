@@ -77,6 +77,7 @@ export default function Home() {
           />
         </ContentCard>
         {
+          //TODO: check if plan is expired
           plan === null ? (
             <DefaultPlan local={local} bible={bible} />
           ) : (
@@ -84,12 +85,12 @@ export default function Home() {
               <CustomPlanUI bible={bible} plan={plan} />
                 :
               <ContentCard>
-                <p>{`${local.catpions.waitForDownload}...`}</p>
+                <p>{`${local.catpions.waitForLoading}...`}</p>
               </ContentCard>
           )
         }
         <ContentCard>
-          <TextEditor />
+          <TextEditor local={local} />
         </ContentCard>
       </div>
       <div className="w-[80%]">

@@ -2,7 +2,6 @@ import type { Bible, CustomPlan } from "@/lib/type"
 import ContentCard from "@/components/content-card";
 import { getDayId, parseBibleRange, getBibleView } from "@/lib/utilites";
 import BibleViewer from "@/components/bible-viewer";
-import Link from "next/link";
 import MixLink from "./mix-link";
 
 type PropType = {
@@ -12,10 +11,12 @@ type PropType = {
 
 //TODO: youtubeVideo support.
 export default function CustomPlanUI({ plan, bible }: PropType) {
+  const dayId = getDayId(plan.beginDate);
+  const data = plan.requireData[dayId];
+
   return (
     plan.dailyContent.map((content, idx) => {
-      const dayId = getDayId(plan.beginDate);
-      const data = plan.requireData[dayId];
+      
       let bibleRange = null;
       if(content.bibleProgressId !== undefined)
         bibleRange = parseBibleRange(plan.bibleProgress[dayId][content.bibleProgressId]);

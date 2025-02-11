@@ -48,7 +48,7 @@ export type Localize = {
     prepareTitle: string,
     endingCaption: string,
     bibleLinkCaption: string,
-    waitForDownload: string,
+    waitForLoading: string,
   },
 };
 
@@ -59,11 +59,11 @@ export type LanguageInfo = {
 };
 
 export namespace Plan {
-  type ExternalLink = {
+  export type ExternalLink = {
     caption: string,
     url: string,
   };
-  type RequireData = {
+  export type RequireData = {
     titles?: string[],
     captions?: string[],
     externalLinks?: ExternalLink[],

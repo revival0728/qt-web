@@ -24,10 +24,18 @@ body {
 }
 
 @layer components {
+  .content-card {
+    @apply hover:cursor-pointer; 
+  }
   .content-card h2 {
     @apply text-3xl font-semibold mb-6;
   }
   .dev-tools .dev-section h2 {
-    @apply text-3xl
+    @apply text-3xl;
+  }
+}
+@layer utilities {
+  .content-card.content-card-current {
+    @apply max-h-none overflow-auto hover:cursor-auto;
   }
 }

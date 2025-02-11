@@ -1,6 +1,9 @@
 import type { Localize } from "@/lib/type";
-import EditorJS from "@editorjs/editorjs";
+import quillOptions from "@/lib/quill-options";
+import Quill from "quill";
 import { useEffect, useRef, useState } from "react";
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
 
 type PropType = {
   local: Localize,
@@ -9,31 +12,30 @@ type PropType = {
 
 export default function TextEditor({ local, readOnly }: PropType) {
   const [editorReady, setEditorReady] = useState<boolean>(false);
-  const editor = useRef<EditorJS | null>(null);
+  const editor = useRef<Quill | null>(null);
 
   useEffect(() => {
     (async () => {
-      const EditorJS = (await import('@editorjs/editorjs')).default;
-      const EditorjsConfig = await (await import('@/lib/editorjs-config')).default();
-      const newEditor = new EditorJS({
-        ...EditorjsConfig,
+      const Quill = (await import('quill')).default;
+      const quill = new Quill('#text-editor', {
+        ...quillOptions,
         readOnly,
-        holder: 'text-editor',
+        theme: 'snow',
       });
-      await newEditor.isReady;
-      setEditorReady(true);
 
-      editor.current = newEditor;
+      editor.current = quill;
+      setEditorReady(true);
     })();
 
     return () => {
-      editor.current?.destroy();
-    };
-  }, [readOnly, setEditorReady]);
+      editor.current = null;
+    }
+  }, [readOnly])
 
   return (
-    <div id="text-editor">
-      { editorReady ? <></> : <p>{local.catpions.waitForLoading}</p> }
-    </div>
+    <>
+      { editorReady ? <></> : <p>{local.catpions.waitForLoading}</p>}
+      <div id="text-editor" />
+    </>
   )
 }

@@ -9,13 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@editorjs/editorjs": "^2.30.8",
-    "@editorjs/header": "^2.8.8",
-    "@editorjs/list": "^2.0.4",
     "file-saver": "^2.0.5",
     "jszip": "^3.10.1",
     "next": "15.1.6",
     "qt-rust": "^0.1.0",
+    "quill": "^2.0.3",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },

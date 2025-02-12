@@ -10,8 +10,10 @@ type PropType = {
 };
 
 //TODO: youtubeVideo support.
+//TODO: show progress
 export default function CustomPlanUI({ plan, bible }: PropType) {
-  const dayId = getDayId(plan.beginDate);
+  const _dayId = getDayId(plan.beginDate);
+  const dayId = plan.loop ? _dayId % plan.duration : _dayId;
   const data = plan.requireData[dayId];
 
   return (

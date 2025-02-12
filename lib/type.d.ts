@@ -49,6 +49,10 @@ export type Localize = {
     endingCaption: string,
     bibleLinkCaption: string,
     waitForLoading: string,
+    takeSomeNotes: string,
+  },
+  message: {
+    saved: string,
   },
 };
 

@@ -36,7 +36,7 @@ body {
 }
 @layer utilities {
   .content-card.content-card-current {
-    @apply max-h-none overflow-auto hover:cursor-auto;
+    @apply max-h-none overflow-auto hover:cursor-auto shadow-2xl;
   }
 }
 

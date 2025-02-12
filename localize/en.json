@@ -7,6 +7,10 @@
     "prepareTitle": "Let's start with a simple prayer to quiet your mind and get ready for today's reading.",
     "endingCaption": "Want to read other passages? Or do you want to compare and contrast?",
     "bibleLinkCaption": "the Bible",
-    "waitForLoading": "Please wait for loading resources"
+    "waitForLoading": "Please wait for loading resources",
+    "takeSomeNotes": "Take some notes!"
+  },
+  "message": {
+    "saved": "Saved!"
   }
 }

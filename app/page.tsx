@@ -21,6 +21,11 @@ export default function Home() {
   const [langId, setLangId] = useState<string>("zh-TW");
   const [plan, setPlan] = useState<CustomPlan | null>(null);
 
+  const isPlanExpired = (checkPlan: CustomPlan | null) => {
+    if(checkPlan === null) return true;
+    return getDayId(checkPlan.beginDate) >= checkPlan.duration;
+  };
+
   useEffect(() => {
     const localLangId = localStorage.getItem('langId');
     if(localLangId !== null) {
@@ -28,7 +33,7 @@ export default function Home() {
     }
   }, [setLangId]);
   useEffect(() => {
-    if(plan === null) return;
+    if(plan === null || isPlanExpired(plan)) return;
     if(plan.langId !== langId) {
       if(plan.localizeData !== undefined && langId in plan.localizeData) {
         setPlan({
@@ -46,6 +51,7 @@ export default function Home() {
       const localPlan = localStorage.getItem('currentPlan');
       if(localPlan !== null) {
         const json: CustomPlan = JSON.parse(localPlan);
+        if(isPlanExpired(json)) return;
         const dayId = getDayId(json.beginDate);
         const newList = [...requireBookList];
         const tdReq = json.requireBookList[dayId];
@@ -77,8 +83,7 @@ export default function Home() {
           />
         </ContentCard>
         {
-          //TODO: check if plan is expired
-          plan === null ? (
+          plan === null || isPlanExpired(plan) ? (
             <DefaultPlan local={local} bible={bible} />
           ) : (
             checkBibleMatchRequirement(requireBookList, bible) ? 
@@ -90,6 +95,7 @@ export default function Home() {
           )
         }
         <ContentCard>
+          <h2>{local.catpions.takeSomeNotes}</h2>
           <TextEditor local={local} />
         </ContentCard>
       </div>

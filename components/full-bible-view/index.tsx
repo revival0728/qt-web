@@ -19,7 +19,10 @@ export default function FullBibleView() {
     localStorage.setItem("bookId", newBookId);
     localStorage.setItem("chapterId", newChapterId.toString());
   };
-  //TODO: pre proc this and save to json file
+  /* 
+   TODO: pre proc this and save to json file
+         This require updating [type Bible] structure.
+  */
   const sortedBookName = useCallback(() => {
     const bookIds = Object.keys(bible.books);
     bookIds.sort((a, b) => { return bible.books[a].order - bible.books[b].order; });

@@ -1,0 +1,39 @@
+{
+  "duration": 1,
+  "beginDate": "2/10/2025",
+  "bibleProgress": [["Ge=1:1-1:10"]],
+  "requireBookList": [["Ge"]],
+  "langId": "zh-TW",
+  "requireData": [{
+    "titles": ["預備自己的心。"],
+    "captions": ["做一個結束禱告。"],
+    "externalLinks": [{
+      "caption": "the Bible",
+      "url": "/bible"
+    }, {
+      "caption": "Video",
+      "url": "https://www.youtube.com/watch?v=d-GBrCrWIHc&list=PLe-YK1dmFUsKWuqNrxu94AcabLtSn6B2l"
+    }]
+  }],
+  "dailyContent": [
+    {
+      "titleId": 0
+    },
+    {
+      "bibleProgressId": 0
+    },
+    {
+      "captionId": 0,
+      "externalLinkIds": [0]
+    },
+    {
+      "externalLinkIds": [1]
+    }
+  ],
+  "localizeData": {
+    "en": [{
+      "titles": ["Prepare yourself"],
+      "captions": ["Do an ending prayer"]
+    }]
+  }
+}

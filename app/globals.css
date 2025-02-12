@@ -24,10 +24,27 @@ body {
 }
 
 @layer components {
+  .content-card {
+    @apply hover:cursor-pointer; 
+  }
   .content-card h2 {
     @apply text-3xl font-semibold mb-6;
   }
   .dev-tools .dev-section h2 {
-    @apply text-3xl
+    @apply text-3xl;
   }
+}
+@layer utilities {
+  .content-card.content-card-current {
+    @apply max-h-none overflow-auto hover:cursor-auto shadow-2xl;
+  }
+}
+
+/* Quill Editor CSS */
+.ql-editor {
+  @apply text-2xl font-klee-one;
+}
+
+.ql-editor h1, h2, h3 {
+  @apply font-bold;
 }

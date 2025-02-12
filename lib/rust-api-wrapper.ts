@@ -7,6 +7,7 @@ const textProcToJson = async (wasm: QTRust | null, version: string, file: File) 
   const text = await file.text();
   if(wasm === null) return null;
   const json = wasm.text_proc_to_json(version, text);
+  if(json === undefined) return undefined;
   const res = new File([json], 'full.json', {
     type: "application/json",
   });
@@ -18,6 +19,7 @@ const jsonSliceByBook = async (wasm: QTRust | null, file: File, fullJson?: boole
   const json = await file.text();
   if(wasm === null) return null;
   const data = wasm.json_slice_by_book(json);
+  if(data === undefined) return undefined;
   const zip = new JSZip();
   if(fullJson !== undefined) {
     if(fullJson)

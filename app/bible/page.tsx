@@ -1,6 +1,21 @@
 import './global.css'
 import FullBibleView from "@/components/full-bible-view";
 import InfoCard from '@/components/info-card';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  openGraph: {
+    type: "website",
+    title: 'QT Bible',
+    description: '每天與神親近一段時間！ Keep a daily quiet time with God!',
+    url: "/bible",
+  },
+  twitter: {
+    title: 'QT Bible',
+    description: '每天與神親近一段時間！ Keep a daily quiet time with God!',
+  }
+}
+
 
 export default function Page() {
   return (

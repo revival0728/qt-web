@@ -45,7 +45,9 @@ export function getDayId(beginDateString: string): number {
   return Math.floor((Date.now() - beginDate.valueOf()) / (1000 * 60 * 60 * 24));
 }
 
-export function parseBibleRange(raw: string): BibleRange {
+export const rawBibleRangeFormat: RegExp = /([A-Z][a-z]+)=([1-9][0-9]*)(:([1-9][0-9]*)(-([1-9][0-9]*):([1-9][0-9]*))?)?/;
+export function parseBibleRange(raw: string): BibleRange | undefined {
+  if(!rawBibleRangeFormat.test(raw)) return undefined;
   const splitBR = raw.split('=');
   const bookId = splitBR[0];
   const splitBE = splitBR[1].split('-');

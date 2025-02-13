@@ -36,7 +36,7 @@ export default function CustomPlanUI({ plan, bible }: PropType) {
             (content.captionId === undefined || data.captions === undefined) && !(content.externalLinkIds === undefined || data.externalLinks === undefined) ?
               <p><MixLink externalLinkIds={content.externalLinkIds} externalLinks={data.externalLinks} /></p> : <></>
           }
-          { bibleRange === null ? <></> : <BibleViewer content={getBibleView(bible, bibleRange.bookId, bibleRange.chapterId, bibleRange.verseRange)} title={true} version={true} /> }
+          { bibleRange === null || bibleRange === undefined ? <></> : <BibleViewer content={getBibleView(bible, bibleRange.bookId, bibleRange.chapterId, bibleRange.verseRange)} title={true} version={true} /> }
         </ContentCard>
       )
     })

@@ -1,12 +1,14 @@
+import "quill/dist/quill.core.css";
+import "quill/dist/quill.snow.css";
+
 import type { Localize } from "@/lib/type";
 import quillOptions from "@/lib/quill-options";
 import Quill from "quill";
 import { useEffect, useRef, useState } from "react";
 import SaveIcon from "@/lib/icon/save";
 import SyncIcon from "@/lib/icon/sync";
-
-import "quill/dist/quill.core.css";
-import "quill/dist/quill.snow.css";
+import storage from "@/lib/storage";
+import { isQuillOpArray } from "@/lib/type-checker";
 
 type PropType = {
   local: Localize,
@@ -31,28 +33,28 @@ export default function TextEditor({ local, readOnly }: PropType) {
         theme: 'snow',
       });
       
-      quill.on('text-change', (delta, oldContent) => {
+      quill.on('text-change', async (delta, oldContent) => {
         if(autoSave.current) {
           const curContent = oldContent.compose(delta);
           const noteName = `${(new Date()).toLocaleDateString()}-note`;
-          localStorage.setItem(noteName, JSON.stringify(curContent.ops));
+          await storage.setItem(noteName, curContent.ops);
         }
       });
-
-      // Load local saved note
-      const localContent = localStorage.getItem(getNoteName());
-      if(localContent !== null) {
-        const Delta = Quill.import('delta');
-        const delta = new Delta();
-        delta.ops = JSON.parse(localContent);
-        quill.setContents(delta);
-      }
 
       // Hide toolbar
       if(readOnly) {
         const toolbar = document.getElementsByClassName('ql-toolbar')[0];
         toolbar.classList.add('hidden');
         toolbar.classList.remove('ql-toolbar');
+      }
+
+      // Load local saved note
+      const localContent = await storage.getItem(getNoteName());
+      if(isQuillOpArray(localContent)) {
+        const Delta = Quill.import('delta');
+        const delta = new Delta();
+        delta.ops = localContent;
+        quill.setContents(delta);
       }
 
       editor.current = quill;
@@ -64,14 +66,14 @@ export default function TextEditor({ local, readOnly }: PropType) {
     }
   }, [readOnly]);
 
-  const save = () => {
+  const save = async () => {
     if(editor.current === null) {
       alert('Edtiro init error.');
       return;
     }
     const delta = editor.current.getContents();
     const noteName = getNoteName();
-    localStorage.setItem(noteName, JSON.stringify(delta.ops));
+    await storage.setItem(noteName, delta.ops);
     alert(local.message.saved);
   };
   const configAutoSave = () => {

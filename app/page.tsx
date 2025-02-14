@@ -12,6 +12,8 @@ import InfoCard from "@/components/info-card";
 import CustomPlanUI from "@/components/plan/custom-plan-ui";
 import DefaultPlan from "@/components/plan/default-plan";
 import TextEditor from "@/components/text-editor";
+import storage from "@/lib/storage";
+import { isCustomPlan } from "@/lib/type-checker";
 
 export default function Home() {
   const [requireBookList, setRequireBookList] = useState<string[]>(["Prv"]);
@@ -27,10 +29,12 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const localLangId = localStorage.getItem('langId');
-    if(localLangId !== null) {
-      setLangId(localLangId);
-    }
+    (async () => {
+      const localLangId = await storage.getItem('langId');
+      if(typeof localLangId === 'string') {
+        setLangId(localLangId);
+      }
+    })();
   }, [setLangId]);
   useEffect(() => {
     if(plan === null || isPlanExpired(plan)) return;
@@ -48,9 +52,9 @@ export default function Home() {
     // Update requireBookList and plan
     // Bible updates in <HomepageSetting />
     (async() => {
-      const localPlan = localStorage.getItem('currentPlan');
-      if(localPlan !== null) {
-        const json: CustomPlan = JSON.parse(localPlan);
+      const localPlan = await storage.getItem('currentPlan');
+      if(isCustomPlan(localPlan)) {
+        const json: CustomPlan = localPlan;
         if(isPlanExpired(json)) return;
         const dayId = getDayId(json.beginDate);
         const newList = [...requireBookList];

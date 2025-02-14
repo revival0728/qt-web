@@ -5,6 +5,7 @@ import SelectMenu from "../select-menu"
 import allVersion from "@/bible/list.json";
 import allLang from "@/localize/list.json";
 import { createBibleByBooks, getRequireBooks } from "@/lib/utilites";
+import storage from "@/lib/storage";
 
 type PropType = Readonly<{
   requireBookList: string[],
@@ -24,7 +25,7 @@ export default function HomepageSetting({ requireBookList, langId, setBible, set
       setLocal(local);
       setBible(newVerBible);
       setVersion(preferVer);
-      localStorage.setItem('langId', langId);
+      await storage.setItem('langId', langId);
       const langIdSelect = document.getElementsByName('langId')[0];
       if(langIdSelect instanceof HTMLSelectElement) {
         langIdSelect.value = langId;

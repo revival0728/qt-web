@@ -5,6 +5,7 @@ import { useCallback, useEffect, useState } from 'react';
 import SelectMenu from '../select-menu';
 import BibleViewer from '../bible-viewer';
 import { getBibleView } from '@/lib/utilites';
+import storage from '@/lib/storage';
 
 import defaultBible from '@/bible/CUV/full.json';
 import allVersion from '@/bible/list.json';
@@ -15,9 +16,9 @@ export default function FullBibleView() {
   const [chapterId, setChapterId] = useState<number>(0);
   const [bookNames, setBookNames] = useState<{id: string, name: string}[]>([]);
 
-  const setLocalPage = (newBookId: string, newChapterId: number) => {
-    localStorage.setItem("bookId", newBookId);
-    localStorage.setItem("chapterId", newChapterId.toString());
+  const setLocalPage = async (newBookId: string, newChapterId: number) => {
+    await storage.setItem("bookId", newBookId);
+    await storage.setItem("chapterId", newChapterId);
   };
   /* 
    TODO: pre proc this and save to json file
@@ -45,10 +46,10 @@ export default function FullBibleView() {
   }, []);
 
   useEffect(() => {
-    const langId = localStorage.getItem('langId');
-    if(langId !== null) {
-      document.documentElement.lang = langId;
-      const getData = async () => {
+    (async () => {
+      const langId = storage.getItem('langId');
+      if(typeof langId === 'string') {
+        document.documentElement.lang = langId;
         if(langId === 'zh-TC') return;
         const local: Localize = await import(`@/localize/${langId}.json`);
         const newVerBible = await import(`@/bible/${local.preferences.version}/full.json`);
@@ -57,21 +58,22 @@ export default function FullBibleView() {
         if(versionSelect instanceof HTMLSelectElement) {
           versionSelect.value = local.preferences.version;
         }
-      };
-      getData();
-    }
+      }
+    })();
   }, [setBible]);
   useEffect(() => {
-    const localBookId = localStorage.getItem("bookId");
-    const localChapterId = localStorage.getItem("chapterId");
-    if(localBookId !== null) {
-      setBookId(localBookId);
-      setMenuBookId(localBookId);
-    }
-    if(localChapterId !== null) {
-      setChapterId(parseInt(localChapterId));
-      setMenuChapterId(parseInt(localChapterId));
-    }
+    (async () => {
+      const localBookId = await storage.getItem("bookId");
+      const localChapterId = await storage.getItem("chapterId");
+      if(typeof localBookId === 'string') {
+        setBookId(localBookId);
+        setMenuBookId(localBookId);
+      }
+      if(typeof localChapterId === 'number') {
+        setChapterId(localChapterId);
+        setMenuChapterId(localChapterId);
+      }
+    })()
   }, [bookId, chapterId, setBookId, setChapterId, setMenuBookId, setMenuChapterId]);
   useEffect(() => {
     setBookNames(sortedBookName());
@@ -83,17 +85,17 @@ export default function FullBibleView() {
     setBible(newBible);
     setBookNames(sortedBookName())
   };
-  const bookIdOnChange: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
+  const bookIdOnChange: React.ChangeEventHandler<HTMLSelectElement> = async (event) => {
     const newBookId = event.target.value;
     setBookId(newBookId);
     setMenuChapterId(0);
     setChapterId(0);
-    setLocalPage(newBookId, 0);
+    await setLocalPage(newBookId, 0);
   };
-  const chapterIdOnChange: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
+  const chapterIdOnChange: React.ChangeEventHandler<HTMLSelectElement> = async (event) => {
     const newChapterId = event.target.value;
     setChapterId(parseInt(newChapterId));
-    setLocalPage(bookId, parseInt(newChapterId));
+    await setLocalPage(bookId, parseInt(newChapterId));
   };
 
   return (

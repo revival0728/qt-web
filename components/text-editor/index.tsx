@@ -3,31 +3,38 @@ import "quill/dist/quill.snow.css";
 
 import type { Localize } from "@/lib/type";
 import quillOptions from "@/lib/quill-options";
-import Quill from "quill";
+import Quill, { type Op } from "quill";
 import { useEffect, useRef, useState } from "react";
 import SaveIcon from "@/lib/icon/save";
 import SyncIcon from "@/lib/icon/sync";
 import storage from "@/lib/storage";
-import { isQuillOpArray } from "@/lib/type-checker";
 
 type PropType = {
   local: Localize,
   readOnly?: boolean,
+  defaultContent?: Op[] | Promise<Op[]>,
 }
 
 //TODO: Add Bible recite
-export default function TextEditor({ local, readOnly }: PropType) {
+export default function TextEditor({ local, readOnly, defaultContent }: PropType) {
   const [editorReady, setEditorReady] = useState<boolean>(false);
   const [autoSaveUI, setAutoSaveUI] = useState<boolean>(false);
   const autoSave = useRef<boolean>(false);
   const editor = useRef<Quill | null>(null);
+  const containerRef = useRef<HTMLDivElement | null>(null);
 
   const getNoteName = () => { return `${(new Date()).toLocaleDateString()}-note`; };
 
   useEffect(() => {
+    const container = containerRef.current;
     (async () => {
+      if(container === null) return;
+      const editorContainer = container.appendChild(
+        container.ownerDocument.createElement('div')
+      );
+      if(editorContainer === null) return;
       const Quill = (await import('quill')).default;
-      const quill = new Quill('#text-editor', {
+      const quill = new Quill(editorContainer, {
         ...quillOptions,
         readOnly,
         theme: 'snow',
@@ -36,26 +43,30 @@ export default function TextEditor({ local, readOnly }: PropType) {
       quill.on('text-change', async (delta, oldContent) => {
         if(autoSave.current) {
           const curContent = oldContent.compose(delta);
-          const noteName = `${(new Date()).toLocaleDateString()}-note`;
-          await storage.setItem(noteName, curContent.ops);
+          await storage.userNotes.setItem(getNoteName(), curContent.ops);
         }
       });
 
       // Hide toolbar
       if(readOnly) {
-        const toolbar = document.getElementsByClassName('ql-toolbar')[0];
-        toolbar.classList.add('hidden');
-        toolbar.classList.remove('ql-toolbar');
+        const toolbar = container.getElementsByClassName('ql-toolbar')[0];
+        if(toolbar !== undefined) {
+          toolbar.classList.add('hidden');
+          toolbar.classList.remove('ql-toolbar');
+        }
       }
 
-      // Load local saved note
-      const localContent = await storage.getItem(getNoteName());
-      if(isQuillOpArray(localContent)) {
-        const Delta = Quill.import('delta');
-        const delta = new Delta();
-        delta.ops = localContent;
-        quill.setContents(delta);
+      // Set defaultContent or load local saved note
+      const Delta = Quill.import('delta');
+      const delta = new Delta();
+      if(defaultContent !== undefined) {
+        delta.ops = defaultContent instanceof Promise ? await defaultContent : defaultContent;
+      } else {
+        const localContent = await storage.userNotes.getItem(getNoteName()) as Op[] | null;
+        if(localContent !== null)
+          delta.ops = localContent;
       }
+      quill.setContents(delta);
 
       editor.current = quill;
       setEditorReady(true);
@@ -63,8 +74,11 @@ export default function TextEditor({ local, readOnly }: PropType) {
 
     return () => {
       editor.current = null;
+      if(container) {
+        container.innerHTML = "";
+      }
     }
-  }, [readOnly]);
+  }, [readOnly, defaultContent]);
 
   const save = async () => {
     if(editor.current === null) {
@@ -73,7 +87,7 @@ export default function TextEditor({ local, readOnly }: PropType) {
     }
     const delta = editor.current.getContents();
     const noteName = getNoteName();
-    await storage.setItem(noteName, delta.ops);
+    await storage.userNotes.setItem(noteName, delta.ops);
     alert(local.message.saved);
   };
   const configAutoSave = () => {
@@ -86,7 +100,7 @@ export default function TextEditor({ local, readOnly }: PropType) {
   }
 
   return (
-    <>
+    <div>
       { editorReady ? 
         <></> : 
         <p>{local.catpions.waitForLoading}</p> 
@@ -98,7 +112,7 @@ export default function TextEditor({ local, readOnly }: PropType) {
           <button type="button" aria-label="auto" onClick={configAutoSave}><SyncIcon colorFill={autoSaveUI ? "#3163D8" : "#484747"} /></button>
         </div>
       }
-      <div id="text-editor" />
-    </>
+      <div ref={containerRef}></div>
+    </div>
   )
 }

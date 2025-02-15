@@ -12,5 +12,13 @@
   },
   "message": {
     "saved": "Saved!"
+  },
+  "navlinks": {
+    "dailyQT": "Daily QT",
+    "bible": "Bible",
+    "notes": "Notes"
+  },
+  "reminder": {
+    "noteSearch": "Only the first 10 results will be displayed"
   }
 }

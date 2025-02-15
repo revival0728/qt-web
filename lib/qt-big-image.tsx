@@ -1,7 +1,7 @@
 export const alt = 'QTBigImage';
 export const contentType = 'image/png';
 
-export default function QTBigImage(fontSize: number) {
+export default function QTBigImage(fontSize: number, text?: string) {
   return (
     <div 
       style={{
@@ -14,6 +14,6 @@ export default function QTBigImage(fontSize: number) {
         alignItems: 'center',
         justifyContent: 'center',
       }}
-    >QT</div>
+    >{text === undefined ? 'QT' : text}</div>
   );
 }

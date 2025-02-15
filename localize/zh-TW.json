@@ -12,5 +12,13 @@
   },
   "message": {
     "saved": "已成功儲存！"
+  },
+  "navlinks": {
+    "dailyQT": "每日QT",
+    "bible": "聖經",
+    "notes": "筆記"
+  },
+  "reminder": {
+    "noteSearch": "只顯示前10筆資料"
   }
 }

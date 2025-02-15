@@ -13,7 +13,10 @@ import CustomPlanUI from "@/components/plan/custom-plan-ui";
 import DefaultPlan from "@/components/plan/default-plan";
 import TextEditor from "@/components/text-editor";
 import storage from "@/lib/storage";
-import { isCustomPlan } from "@/lib/type-checker";
+import ContentBox from "@/components/content-box";
+import ContentBoard from "@/components/content-board";
+import InfoBox from "@/components/info-box";
+import NavLinks from "@/components/navlinks";
 
 export default function Home() {
   const [requireBookList, setRequireBookList] = useState<string[]>(["Prv"]);
@@ -52,8 +55,8 @@ export default function Home() {
     // Update requireBookList and plan
     // Bible updates in <HomepageSetting />
     (async() => {
-      const localPlan = await storage.getItem('currentPlan');
-      if(isCustomPlan(localPlan)) {
+      const localPlan = await storage.getItem('currentPlan') as CustomPlan | null;
+      if(localPlan !== null) {
         const json: CustomPlan = localPlan;
         if(isPlanExpired(json)) return;
         const dayId = getDayId(json.beginDate);
@@ -74,8 +77,8 @@ export default function Home() {
   }, [version, requireBookList, setPlan, setRequireBookList]);
 
   return (
-    <div className="flex flex-col gap-5 justify-between items-center absolute top-0 left-0 h-fit min-h-full w-full pt-2 pb-4 bg-dlyw font-noto-sans-TC">
-      <div id="contents" className="w-fit pt-2 px-14 pb-14 max-md:px-5 space-y-5 overflow-auto">
+    <ContentBoard>
+      <ContentBox>
         <ContentCard>
           <HomepageSetting 
             requireBookList={requireBookList} 
@@ -102,10 +105,11 @@ export default function Home() {
           <h2>{local.catpions.takeSomeNotes}</h2>
           <TextEditor local={local} />
         </ContentCard>
-      </div>
-      <div className="w-[80%]">
+      </ContentBox>
+      <InfoBox>
+        <NavLinks globalLocal={local} />
         <InfoCard />
-      </div>
-    </div>
+      </InfoBox>
+    </ContentBoard>
   );
 }

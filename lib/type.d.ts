@@ -54,6 +54,14 @@ export type Localize = {
   message: {
     saved: string,
   },
+  navlinks: {
+    dailyQT: string,
+    bible: string,
+    notes: string,
+  },
+  reminder: {
+    noteSearch: string,
+  },
 };
 
 export type LanguageInfo = {

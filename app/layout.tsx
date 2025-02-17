@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Noto_Sans_TC, Noto_Serif_TC, Klee_One } from "next/font/google";
 import "./globals.css";
+import LoadReciteBibleHTMLElement from "@/components/load-recite-html-element";
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://qt.hsingfu.tw'),
@@ -43,8 +44,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="zh-TW">
+      <LoadReciteBibleHTMLElement />
       <body
         className={`${notoSansTC.variable} ${notoSerifTC.variable} ${kleeOne.variable} antialiased`}
       >

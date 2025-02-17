@@ -2,12 +2,14 @@ import "quill/dist/quill.core.css";
 import "quill/dist/quill.snow.css";
 
 import type { Localize } from "@/lib/type";
-import quillOptions from "@/lib/quill-options";
+import quillOptions from "@/components/text-editor/quill-options";
 import Quill, { type Op } from "quill";
 import { useEffect, useRef, useState } from "react";
 import SaveIcon from "@/lib/icon/save";
 import SyncIcon from "@/lib/icon/sync";
 import storage from "@/lib/storage";
+import { createToolbarUI } from "./toolbar-ui";
+import { ReciteBible } from "./recite-bible";
 
 type PropType = {
   local: Localize,
@@ -29,11 +31,15 @@ export default function TextEditor({ local, readOnly, defaultContent }: PropType
     const container = containerRef.current;
     (async () => {
       if(container === null) return;
+      const toolbar = createToolbarUI();
+      quillOptions.modules.toolbar.container = toolbar;
+      container.appendChild(toolbar);
       const editorContainer = container.appendChild(
         container.ownerDocument.createElement('div')
       );
       if(editorContainer === null) return;
       const Quill = (await import('quill')).default;
+      Quill.register('formats/reciteBible', ReciteBible);
       const quill = new Quill(editorContainer, {
         ...quillOptions,
         readOnly,

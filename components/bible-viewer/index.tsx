@@ -1,6 +1,7 @@
 import type { BibleView } from "@/lib/type";
 import NarVerse from "./verse-line/nar-verse";
 import PeoVerse from "./verse-line/peo-verse";
+import { PEO_BOOK } from "@/lib/utilites";
 
 type PropType = {
   content: BibleView
@@ -8,14 +9,12 @@ type PropType = {
   version?: boolean,
 };
 
-const PEO_BOOK: string[] = ["Psa", "Prv", "Eccl", "SSol"];
-
 export default function BibleViewer({ content, title, version }: PropType) {
   return (
-    <article className='font-noto-serif-TC text-2xl text-gray-800 leading-loose'>
+    <article className='bible-verse'>
       {
         title ? (
-          <h2 className='font-semibold'>{`${content.bookName} ${content.chapterName}`}{content.fullChapter ? "" : `:${content.verseRange[0]}-${content.verseRange[1]}`}{version ? <span className="ml-2">{content.version}</span> : <></>}</h2>
+          <h2>{`${content.bookName} ${content.chapterName}`}{content.fullChapter ? "" : `:${content.verseRange[0]}-${content.verseRange[1]}`}{version ? <span className="bible-version">{content.version}</span> : <></>}</h2>
         ) :
           <></>
       }

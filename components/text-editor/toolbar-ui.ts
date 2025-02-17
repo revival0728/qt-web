@@ -38,12 +38,12 @@ export const createToolbarUI = (): HTMLElement => {
     });
     toolbar.appendChild(formats);
   });
-  // const formats = document.createElement('span');
-  // formats.classList.add('ql-formats');
-  // const reciteBible = document.createElement('button');
-  // reciteBible.innerHTML = "recite";
-  // reciteBible.classList.add('ql-reciteBible');
-  // formats.appendChild(reciteBible);
-  // toolbar.appendChild(formats);
+  const formats = document.createElement('span');
+  formats.classList.add('ql-formats');
+  const reciteBible = document.createElement('button');
+  reciteBible.innerHTML = "recite";
+  reciteBible.classList.add('ql-reciteBible');
+  formats.appendChild(reciteBible);
+  toolbar.appendChild(formats);
   return toolbar;
 }

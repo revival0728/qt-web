@@ -9,7 +9,7 @@ import SaveIcon from "@/lib/icon/save";
 import SyncIcon from "@/lib/icon/sync";
 import storage from "@/lib/storage";
 import { createToolbarUI } from "./toolbar-ui";
-import { ReciteBible } from "./recite-bible";
+import { ReciteBible, reciteBibleHandler } from "./recite-bible";
 
 type PropType = {
   local: Localize,
@@ -17,7 +17,6 @@ type PropType = {
   defaultContent?: Op[] | Promise<Op[]>,
 }
 
-//TODO: Add Bible recite
 export default function TextEditor({ local, readOnly, defaultContent }: PropType) {
   const [editorReady, setEditorReady] = useState<boolean>(false);
   const [autoSaveUI, setAutoSaveUI] = useState<boolean>(false);
@@ -39,6 +38,7 @@ export default function TextEditor({ local, readOnly, defaultContent }: PropType
       );
       if(editorContainer === null) return;
       const Quill = (await import('quill')).default;
+      quillOptions.modules.toolbar.handlers.reciteBible = reciteBibleHandler(Quill);
       Quill.register('formats/reciteBible', ReciteBible);
       const quill = new Quill(editorContainer, {
         ...quillOptions,

@@ -6,6 +6,6 @@ type PropType = {
 
 export default function NarVerse({ verse }: PropType) {
   return (
-    <span><span className='align-text-top text-sm font-light opacity-80 select-none'>{verse.id}</span>{verse.verse}</span>
+    <span><span className='bible-verse-id'>{verse.id}</span>{verse.verse}</span>
   )
 }

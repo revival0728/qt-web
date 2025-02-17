@@ -34,6 +34,7 @@ export type BibleView = {
 };
 
 export type BibleRange = {
+  version?: string,
   bookId: string,
   chapterId: number,
   verseRange?: [number, number],

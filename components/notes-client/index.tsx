@@ -18,7 +18,7 @@ export default function NotesClient() {
   const [filter, setFilter] = useState<RegExp>(/./);
 
   const getNoteDate = (noteName: string) => {
-    const date = new Date(noteName.slice(0, noteName.length - 4));
+    const date = new Date(noteName.slice(0, noteName.length - 5));
     return date;
   };
 
@@ -52,9 +52,9 @@ export default function NotesClient() {
   }, [langId, setNoteNames, setNoteDates]);
   useEffect(() => {
     if(noteNames !== null) {
-      const newFilteredNotes = noteNames.filter((noteName, index) => {
-        return noteDates[noteName].search(filter) !== -1 && index < 10
-      });
+      const newFilteredNotes = noteNames
+        .filter(noteName => noteDates[noteName].search(filter) !== -1)
+        .filter((_, index) => index < 10);
       setFilteredNotes(newFilteredNotes);
     }
   }, [noteDates, noteNames, filter, setFilteredNotes]);

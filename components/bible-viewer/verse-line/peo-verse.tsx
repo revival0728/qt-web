@@ -6,6 +6,6 @@ type PropType = {
 
 export default function PeoVerse({ verse }: PropType) {
   return (
-    <p><span className='align-text-top text-sm font-light opacity-80 select-none'>{verse.id}</span>{verse.verse}</p>
+    <p><span className='bible-verse-id'>{verse.id}</span>{verse.verse}</p>
   )
 }

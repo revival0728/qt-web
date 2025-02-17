@@ -38,6 +38,18 @@ body {
   .content-card.content-card-current {
     @apply max-h-none overflow-auto hover:cursor-auto shadow-2xl;
   }
+  .bible-verse-id {
+    @apply align-text-top text-sm font-light opacity-80 select-none;
+  }
+  .bible-verse {
+    @apply font-noto-serif-TC text-2xl text-gray-800 leading-loose;
+  }
+  .bible-verse h2 {
+    @apply font-semibold;
+  }
+  .bible-verse h2 span.bible-version {
+    @apply ml-2;
+  }
 }
 
 /* Quill Editor CSS */

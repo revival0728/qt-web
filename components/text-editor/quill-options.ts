@@ -1,10 +1,13 @@
 import type { QuillOptions } from "quill";
-import { reciteBibleHandler } from "./recite-bible";
 
 interface CustomQuillOptions extends QuillOptions {
   modules: {
     toolbar: {
       container: HTMLElement | null;
+      handlers: {
+        reciteBible: unknown;
+        [ops: string]: unknown
+      },
       [opts: string]: unknown,
     },
   },
@@ -15,7 +18,7 @@ const quillOptions: CustomQuillOptions = {
     toolbar: {
       container: null,
       handlers: {
-        reciteBible: reciteBibleHandler,
+        reciteBible: null,
       },
     },
   },

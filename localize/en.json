@@ -11,7 +11,8 @@
     "takeSomeNotes": "Take some notes!"
   },
   "message": {
-    "saved": "Saved!"
+    "saved": "Saved!",
+    "enterVerseRange": "Please enter the range of verses in format"
   },
   "navlinks": {
     "dailyQT": "Daily QT",

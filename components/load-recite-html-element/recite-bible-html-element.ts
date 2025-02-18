@@ -30,16 +30,19 @@ export class ReciteBibleElement extends HTMLElement {
       .bible-verse {
         font-family: var(--font-noto-serif-TC);
         font-size: 1.5rem /* 24px */;
-        line-height: 2rem /* 32px */;
         --tw-text-opacity: 1;
         color: rgb(31 41 55 / var(--tw-text-opacity, 1)) /* #1f2937 */;
         line-height: 2;
       }
       .bible-verse h2 {
         font-weight: 600;
+        margin: 0;
       }
       .bible-verse h2 span.bible-version {
         margin-left: 0.5rem /* 8px */;
+      }
+      .bible-verse p {
+        margin: 0;
       }
     `;
     shadow.appendChild(style);
@@ -47,10 +50,18 @@ export class ReciteBibleElement extends HTMLElement {
     if(src === null) return;
     try {
       const range = parseBibleRange(src);
-      console.log(range);
-      shadow.innerHTML = src;
-      if(range === undefined) return;
-      const book = await import(`@/bible/${range.version}/${range.bookId}`) as Book;
+      if(range === undefined) {
+        shadow.innerHTML = src;
+        return;
+      }
+      if(range.version === undefined) {
+        const ver = this.getAttribute('version');
+        if(ver !== null)
+          range.version = ver;
+        else
+          range.version = "CUV";
+      }
+      const book = (await import(`@/bible/${range.version}/${range.bookId}`)).default as Book;
       const article = document.createElement('article');
       article.classList.add('bible-verse');
       if(this.getAttribute('title') !== null) {
@@ -64,10 +75,10 @@ export class ReciteBibleElement extends HTMLElement {
         }
         article.appendChild(title);
       }
-      const ch = book.chapters[range.chapterId].verses;
+      const ch = book.chapters[range.chapterId - 1].verses;
       const peo = PEO_BOOK.includes(book.id);
       if(range.verseRange === undefined)
-        range.verseRange = [0, ch.length - 1];
+        range.verseRange = [1, ch.length];
       const ptag = document.createElement('p');
       for(let i = range.verseRange[0] - 1; i <= range.verseRange[1] - 1; ++i)  {
         const v = ch[i];
@@ -85,7 +96,8 @@ export class ReciteBibleElement extends HTMLElement {
       if(!peo)
         article.appendChild(ptag);
       shadow.appendChild(article);
-    } catch {
+    } catch(err) {
+      console.log(err);
       return;
     }
   }

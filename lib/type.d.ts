@@ -54,6 +54,7 @@ export type Localize = {
   },
   message: {
     saved: string,
+    enterVerseRange: string,
   },
   navlinks: {
     dailyQT: string,

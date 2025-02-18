@@ -40,10 +40,16 @@ export const createToolbarUI = (): HTMLElement => {
   });
   const formats = document.createElement('span');
   formats.classList.add('ql-formats');
-  const reciteBible = document.createElement('button');
-  reciteBible.innerHTML = "recite";
-  reciteBible.classList.add('ql-reciteBible');
-  formats.appendChild(reciteBible);
+  const addReciteBible = () => {
+    const reciteBible = document.createElement('button');
+    const icon = document.createElement('img');
+    icon.src = "/citation.svg";
+    icon.alt = "recite";
+    reciteBible.appendChild(icon);
+    reciteBible.classList.add('ql-reciteBible');
+    formats.appendChild(reciteBible);
+  }
+  addReciteBible();
   toolbar.appendChild(formats);
   return toolbar;
 }

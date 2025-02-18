@@ -54,8 +54,13 @@ export class ReciteBibleElement extends HTMLElement {
         shadow.innerHTML = src;
         return;
       }
-      if(range.version === undefined)
-        range.version = "CUV";
+      if(range.version === undefined) {
+        const ver = this.getAttribute('version');
+        if(ver !== null)
+          range.version = ver;
+        else
+          range.version = "CUV";
+      }
       const book = (await import(`@/bible/${range.version}/${range.bookId}`)).default as Book;
       const article = document.createElement('article');
       article.classList.add('bible-verse');

@@ -11,7 +11,8 @@
     "takeSomeNotes": "把今天的感動寫下來吧！"
   },
   "message": {
-    "saved": "已成功儲存！"
+    "saved": "已成功儲存！",
+    "enterVerseRange": "請依照格式輸入經文範圍"
   },
   "navlinks": {
     "dailyQT": "每日QT",

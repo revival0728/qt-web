@@ -18,6 +18,8 @@ type PropType = {
 }
 
 // TODO: Write docs for user
+// BUG: The toolbar handler run twice and document.getSelect().anchorNode is null
+// BUG: Overwriting ReciteBible formats
 export default function TextEditor({ local, readOnly, defaultContent }: PropType) {
   const [editorReady, setEditorReady] = useState<boolean>(false);
   const [autoSaveUI, setAutoSaveUI] = useState<boolean>(false);
@@ -46,7 +48,7 @@ export default function TextEditor({ local, readOnly, defaultContent }: PropType
         readOnly,
         theme: 'snow',
       });
-      
+
       quill.on('text-change', async (delta, oldContent) => {
         if(autoSave.current) {
           const curContent = oldContent.compose(delta);
@@ -85,7 +87,7 @@ export default function TextEditor({ local, readOnly, defaultContent }: PropType
         container.innerHTML = "";
       }
     }
-  }, [local, readOnly, defaultContent]);
+  }, [editor, local, readOnly, defaultContent]);
 
   const save = async () => {
     if(editor.current === null) {

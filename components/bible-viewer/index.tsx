@@ -10,11 +10,18 @@ type PropType = {
 };
 
 export default function BibleViewer({ content, title, version }: PropType) {
+  const genVerse = (verseRange: [number, number]) => {
+    if(verseRange[0] === verseRange[1])
+      return `${verseRange[0]}`;
+    else
+      return `${verseRange[0]}-${verseRange[1]}`;
+ };
+
   return (
     <article className='bible-verse'>
       {
         title ? (
-          <h2>{`${content.bookName} ${content.chapterName}`}{content.fullChapter ? "" : `:${content.verseRange[0]}-${content.verseRange[1]}`}{version ? <span className="bible-version">{content.version}</span> : <></>}</h2>
+          <h2>{`${content.bookName} ${content.chapterName}`}{content.fullChapter ? "" : `:${genVerse(content.verseRange)}`}{version ? <span className="bible-version">{content.version}</span> : <></>}</h2>
         ) :
           <></>
       }

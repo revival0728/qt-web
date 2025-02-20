@@ -10,8 +10,10 @@ export class ReciteBibleElement extends HTMLElement {
     if(range.verseRange !== undefined) {
       verseId.push(":");
       verseId.push(range.verseRange[0].toString());
-      verseId.push("-");
-      verseId.push(range.verseRange[1].toString());
+      if(range.verseRange[0] !== range.verseRange[1]) {
+        verseId.push("-");
+        verseId.push(range.verseRange[1].toString());
+      }
     }
     return `${book.name} ${range.chapterId}${verseId.join("")}`;
   }

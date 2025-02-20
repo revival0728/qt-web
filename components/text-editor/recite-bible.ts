@@ -21,11 +21,16 @@ export class ReciteBible extends BlockEmbed {
   }
 }
 
-export const getReciteBibleHandler = (Quill: typeof import('quill').default, local: Localize) => function(this: Toolbar) {
+type Quill = typeof import('quill').default;
+export const getReciteBibleHandler = (Quill: Quill, local: Localize) => function(this: Toolbar) {
   const quill = this.quill;
-  const value = prompt(local.message.enterVerseRange);
-  if(value === null) return;
   const range = quill.getSelection(true);
+  console.log(document.getSelection());
+  // TODO: Uncomment this before pushing to production
+  // const value = prompt(local.message.enterVerseRange);
+  const value = "Prv=1:1";
+  if(value === null) return;
+  console.log(range);
   quill.insertEmbed(range.index, 'reciteBible', {
     src: value,
     version: local.preferences.version,

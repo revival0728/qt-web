@@ -40,6 +40,7 @@ export const createToolbarUI = (): HTMLElement => {
   });
   const formats = document.createElement('span');
   formats.classList.add('ql-formats');
+  formats.classList.add('custom');
   const addReciteBible = () => {
     const reciteBible = document.createElement('button');
     const icon = document.createElement('img');

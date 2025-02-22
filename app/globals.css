@@ -56,7 +56,9 @@ body {
 .ql-editor {
   @apply text-2xl font-klee-one;
 }
-
 .ql-editor h1, h2, h3 {
   @apply font-bold;
+}
+.ql-toolbar .ql-reciteBible {
+  @apply select-none;
 }

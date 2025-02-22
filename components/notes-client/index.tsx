@@ -40,7 +40,7 @@ export default function NotesClient() {
   }, [setLocal, setLangId]);
   useEffect(() => {
     (async () => {
-      const newNotenames = await storage.userNotes.keys();
+      const newNotenames = (await storage.userNotes.keys()).reverse();
       const newNoteDates: {[notName: string]: string} = {};
       for(let i = 0; i < newNotenames.length; ++i) {
         const noteName = newNotenames[i];

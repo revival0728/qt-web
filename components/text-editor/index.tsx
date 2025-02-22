@@ -3,7 +3,8 @@ import "quill/dist/quill.snow.css";
 
 import type { Localize } from "@/lib/type";
 import quillOptions from "@/components/text-editor/quill-options";
-import Quill, { type Op } from "quill";
+import type Quill from "quill";
+import type { Op } from "quill";
 import { useEffect, useRef, useState } from "react";
 import SaveIcon from "@/lib/icon/save";
 import SyncIcon from "@/lib/icon/sync";
@@ -18,18 +19,28 @@ type PropType = {
 }
 
 // TODO: Write docs for user
-// BUG: The toolbar handler run twice and document.getSelect().anchorNode is null
-// BUG: Overwriting ReciteBible formats
 export default function TextEditor({ local, readOnly, defaultContent }: PropType) {
   const [editorReady, setEditorReady] = useState<boolean>(false);
   const [autoSaveUI, setAutoSaveUI] = useState<boolean>(false);
   const autoSave = useRef<boolean>(false);
   const editor = useRef<Quill | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+  const localRef = useRef<Localize>(local);
 
   const getNoteName = () => { return `${(new Date()).toLocaleDateString()}-note`; };
 
   useEffect(() => {
+    if(localRef.current !== local) {
+      console.log("update");
+      localRef.current = local
+    }
+  }, [local])
+  useEffect(() => {
+    // NOTICE:
+    // The dependencies list causes rerendering -> 
+    // The previous editor ref didn't destroy -> 
+    // There are two editor in the page, but one is already unmounted
+    // ? (just guessing)
     const container = containerRef.current;
     (async () => {
       if(container === null) return;
@@ -41,8 +52,8 @@ export default function TextEditor({ local, readOnly, defaultContent }: PropType
       );
       if(editorContainer === null) return;
       const Quill = (await import('quill')).default;
-      quillOptions.modules.toolbar.handlers.reciteBible = getReciteBibleHandler(Quill, local);
-      Quill.register('formats/reciteBible', ReciteBible);
+      quillOptions.modules.toolbar.handlers.reciteBible = getReciteBibleHandler(Quill, localRef);
+      Quill.register('formats/reciteBible', ReciteBible, true);
       const quill = new Quill(editorContainer, {
         ...quillOptions,
         readOnly,
@@ -87,7 +98,7 @@ export default function TextEditor({ local, readOnly, defaultContent }: PropType
         container.innerHTML = "";
       }
     }
-  }, [editor, local, readOnly, defaultContent]);
+  }, [readOnly, defaultContent]);
 
   const save = async () => {
     if(editor.current === null) {

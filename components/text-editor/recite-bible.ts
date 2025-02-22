@@ -1,6 +1,7 @@
 import { Localize } from "@/lib/type";
 import { BlockEmbed } from "quill/blots/block";
 import Toolbar from "quill/modules/toolbar";
+import type { RefObject } from "react";
 
 export class ReciteBible extends BlockEmbed {
   static blotName = 'reciteBible';
@@ -22,15 +23,12 @@ export class ReciteBible extends BlockEmbed {
 }
 
 type Quill = typeof import('quill').default;
-export const getReciteBibleHandler = (Quill: Quill, local: Localize) => function(this: Toolbar) {
+export const getReciteBibleHandler = (Quill: Quill, localRef: RefObject<Localize>) => function(this: Toolbar) {
+  const local = localRef.current;
   const quill = this.quill;
   const range = quill.getSelection(true);
-  console.log(document.getSelection());
-  // TODO: Uncomment this before pushing to production
-  // const value = prompt(local.message.enterVerseRange);
-  const value = "Prv=1:1";
+  const value = prompt(local.message.enterVerseRange);
   if(value === null) return;
-  console.log(range);
   quill.insertEmbed(range.index, 'reciteBible', {
     src: value,
     version: local.preferences.version,

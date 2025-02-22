@@ -19,6 +19,10 @@ class storage {
   static setItem = data.setItem;
 
   static userNotes = userNotes;
+
+  static async langId(): Promise<string | null> {
+    return await data.getItem('langId');
+  }
 }
 
 export default storage;

@@ -31,7 +31,6 @@ export default function TextEditor({ local, readOnly, defaultContent }: PropType
 
   useEffect(() => {
     if(localRef.current !== local) {
-      console.log("update");
       localRef.current = local
     }
   }, [local])

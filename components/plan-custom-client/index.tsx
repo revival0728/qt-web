@@ -20,6 +20,13 @@ export default function PlanCustomClient() {
   const [local, setLocal] = useState<Localize>(defaultLocal);
   const [bible, setBible] = useState<Bible>(defaultBible);
   const [bookList, setBookList] = useState<Option[]>([]);
+  const divide_by = [{
+    id: "chapter",
+    name: "chapter",
+  }, {
+    id: "verse",
+    name: "verse",
+  }];
   const config = {
     duration: useRef<Input>(null),
     langId: useRef<Select>(null),
@@ -29,20 +36,26 @@ export default function PlanCustomClient() {
       end: [useRef<Select>(null), useRef<Select>(null), useRef<Select>(null)],
     },
   };
+  const oper = {
+    dailyCount: {
+      type: useRef<Select>(null),
+      value: useRef<Input>(null),
+    }
+  };
   
   const initValueWrapper = () => {
     const bookId = "Ge";
     const allChap = bible.books[bookId].chapters;
-    const chapterList = allChap.map((name, id) => {
+    const chapterList = allChap.map((name) => {
       return {
-        id: id.toString(),
+        id: name.id.toString(),
         name: name.id.toString(),
       }
     });
     const allVerse = allChap[0].verses;
-    const verseList = allVerse.map((name, id) => {
+    const verseList = allVerse.map((name) => {
       return {
-        id: id.toString(),
+        id: name.id.toString(),
         name: name.id.toString(),
       }
     });
@@ -59,14 +72,14 @@ export default function PlanCustomClient() {
     const bkHandler: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
       const bookId = event.target.value;
       const allChap = bible.books[bookId].chapters;
-      const chapterList = allChap.map((name, id) => {
+      const chapterList = allChap.map((name) => {
         return {
-          id: id.toString(),
+          id: name.id.toString(),
           name: name.id.toString(),
         }
       });
       if(chapter.current !== null)
-        chapter.current.value = "0";
+        chapter.current.value = "1";
       setChapterList(chapterList);
     };
     const chHandler: React.ChangeEventHandler<HTMLSelectElement> = (event) => {
@@ -74,14 +87,14 @@ export default function PlanCustomClient() {
       const bookId = book.current.value;
       const chapterId = parseInt(event.target.value);
       const allVerse = bible.books[bookId].chapters[chapterId].verses;
-      const verseList = allVerse.map((name, id) => {
+      const verseList = allVerse.map((name) => {
         return {
-          id: id.toString(),
+          id: name.id.toString(),
           name: name.id.toString(),
         }
       });
       if(verse.current !== null)
-        verse.current.value = "0";
+        verse.current.value = "1";
       setVerseList(verseList);
     };
     return [bkHandler, chHandler];
@@ -121,12 +134,12 @@ export default function PlanCustomClient() {
 
   return (
     <>
-      <ContentCard>
+      <ContentCard stretch={false}>
         <SingleInput label="Duration" inputType="number" inputRef={config.duration} />
         <SelectInput label="Lang ID" options={AllLangId} selectRef={config.langId} />
         <SingleInput label="Loop" inputType="checkbox" inputRef={config.loop} />
       </ContentCard>
-      <ContentCard>
+      <ContentCard stretch={false}>
         <div>Bible Progress</div>
         <div>
           <span>Begin: </span>
@@ -139,6 +152,11 @@ export default function PlanCustomClient() {
           <SelectInput label="Book" onChange={bkHandlerE} options={bookList} selectRef={config.bibleProgress.end[0]} />
           <SelectInput label="Chapter" onChange={chHandlerE} options={chapterListE} selectRef={config.bibleProgress.end[1]} />
           <SelectInput label="Verse" options={verseListE} selectRef={config.bibleProgress.end[2]} />
+        </div>
+        <div>
+          <SelectInput label="Divide By" options={divide_by} selectRef={oper.dailyCount.type} />
+          <SingleInput label="Daily Count" inputType="number" inputRef={oper.dailyCount.value} />
+          <button type="button">Add to plan</button>
         </div>
       </ContentCard>
     </>

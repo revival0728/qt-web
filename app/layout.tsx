@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans_TC, Noto_Serif_TC, Klee_One } from "next/font/google";
+import { Analytics } from "@vercel/analytics/react"
 import "./globals.css";
 import LoadReciteBibleHTMLElement from "@/components/load-recite-html-element";
 
@@ -47,6 +48,7 @@ export default function RootLayout({
 
   return (
     <html lang="zh-TW">
+      <Analytics />
       <LoadReciteBibleHTMLElement />
       <body
         className={`${notoSansTC.variable} ${notoSerifTC.variable} ${kleeOne.variable} antialiased`}
